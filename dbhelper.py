@@ -6,7 +6,7 @@ def convert_data(cursor, results):
     new_results = []
     for row in results:
         new_results.append(dict(zip(column_names, row)))
-        return new_results
+    return new_results
 
 def run_procedure(sql, args):
         try:
