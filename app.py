@@ -38,6 +38,32 @@ def post_new_login():
         else:
             return make_response(jsonify(results), 500) 
 
+# User API Registering a User/signin-up  
+@app.post('/api/user')
+def post_new_user():
+        uuid_value=uuid.uuid4()
+        error=apiHelper.check_endpoint_info(request.json,[ "username","first_name","last_name","phone_number","email","password","user_profile_url"]) 
+        if (error==None):
+            token = str(uuid_value)
+            salt = str(uuid_value)
+        elif(error != None):
+          return make_response(jsonify(error), 400)
+        results = dbhelper.run_procedure('CAll singnup_user(?,?,?,?,?,?,?,?,?)',[request.json.get("username"),request.json.get("first_name"),request.json.get("last_name"),request.json.get("phone_number"),request.json.get("email"),request.json.get("password"),request.json.get("user_profile_url"),token,salt])
+        if(type(results)==list):
+             return make_response(jsonify(results), 200)
+        else:
+            return make_response(jsonify(results), 500) 
+#  User Login  API 
+@app.post('/api/user-login')
+def post_new_userLogin():
+        error=apiHelper.check_endpoint_info(request.json,["email","password"]) 
+        if (error != None):
+         return make_response(jsonify(error), 400)
+        results = dbhelper.run_procedure('CAll user_login(?,?)',[request.json.get("email"),request.json.get("password")])
+        if(type(results)==list):
+             return make_response(jsonify(results), 200)
+        else:
+            return make_response(jsonify(results), 500) 
 
 if (dbcreds.production_mode == True):
     print("Running in Production Mode")
