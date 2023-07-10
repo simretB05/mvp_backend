@@ -38,6 +38,31 @@ def post_new_login():
         else:
             return make_response(jsonify(results), 500) 
 
+# Adding  dormitory   POST API 
+@app.post('/api/dormitory')
+def add_dormitory():
+    error=apiHelper.check_endpoint_info(request.json,["name","address","facilities"]) 
+    errorHeader=apiHelper.check_endpoint_info(request.headers,["token"]) 
+    if (error != None and errorHeader !=None):
+      return make_response(jsonify(error), 400)
+    results = dbhelper.run_procedure('CAll  insert_new_dormitory(?,?,?,?)',[request.json.get("name"),request.json.get("address"),request.json.get("facilities"),request.headers.get("token")])
+    if(type(results)==list):
+        return make_response(jsonify(results), 200)
+    else:
+      return make_response(jsonify(results), 500)
+
+# Adding  dorm-room   POST API 
+@app.post('/api/dorm-room')
+def add_dorm_room():
+    error=apiHelper.check_endpoint_info(request.json,["room_number","floor_name","room_type","capacity","avilablity_status","monthly_rent","facilities","dormitory_id"]) 
+    if (error != None ):
+      return make_response(jsonify(error), 400)
+    results = dbhelper.run_procedure('CAll  insret_new_room(?,?,?,?,?,?,?,?)',[request.json.get("room_number"),request.json.get("floor_name"),request.json.get("room_type"),request.json.get("capacity"),request.json.get("avilablity_status"),request.json.get("monthly_rent"),request.json.get("facilities"),request.json.get("dormitory_id")])
+    if(type(results)==list):
+        return make_response(jsonify(results), 200)
+    else:
+      return make_response(jsonify(results), 500)  
+
 # User API Registering a User/signin-up  
 @app.post('/api/user')
 def post_new_user():
@@ -53,6 +78,7 @@ def post_new_user():
              return make_response(jsonify(results), 200)
         else:
             return make_response(jsonify(results), 500) 
+        
 #  User Login  API 
 @app.post('/api/user-login')
 def post_new_userLogin():
