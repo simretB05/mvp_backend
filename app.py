@@ -37,8 +37,21 @@ def post_new_login():
              return make_response(jsonify(results), 200)
         else:
             return make_response(jsonify(results), 500) 
+        
 
-# Adding  dormitory   POST API 
+# University  API Logout  DELETE  API
+@app.delete('/api/university-logout')
+def logOut_client():
+        error=apiHelper.check_endpoint_info(request.headers,["token"]) 
+        if (error !=None):
+          return make_response(jsonify(error), 400)
+        results = dbhelper.run_procedure('CAll logout_user(?)',[request.headers.get("token")])
+        if(type(results)==list):
+            return make_response(jsonify(results), 200)
+        else:
+            return make_response(jsonify(results), 500) 
+        
+# Adding  dormitory  POST API 
 @app.post('/api/dormitory')
 def add_dormitory():
     error=apiHelper.check_endpoint_info(request.json,["name","address","facilities"]) 
@@ -51,7 +64,7 @@ def add_dormitory():
     else:
       return make_response(jsonify(results), 500)
 
-# Adding  dorm-room   POST API 
+# Adding  dorm-room  POST API 
 @app.post('/api/dorm-room')
 def add_dorm_room():
     error=apiHelper.check_endpoint_info(request.json,["room_number","floor_name","room_type","capacity","avilablity_status","monthly_rent","facilities","dormitory_id"]) 
@@ -90,6 +103,18 @@ def post_new_userLogin():
              return make_response(jsonify(results), 200)
         else:
             return make_response(jsonify(results), 500) 
+
+# User API Logout DELETE  API
+@app.delete('/api/user-logout')
+def logOut_user():
+        error=apiHelper.check_endpoint_info(request.headers,["token"]) 
+        if (error !=None):
+          return make_response(jsonify(error), 400)
+        results = dbhelper.run_procedure('CAll logout_user(?)',[request.headers.get("token")])
+        if(type(results)==list):
+            return make_response(jsonify(results), 200)
+        else:
+            return make_response(jsonify(results), 500)
 
 if (dbcreds.production_mode == True):
     print("Running in Production Mode")
