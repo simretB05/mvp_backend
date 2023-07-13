@@ -10,14 +10,16 @@ app=Flask(__name__)
 
 CORS(app)
 
+########(University API)######
 # University  POST API Registering a University/signin-up  
 @app.post('/api/university')
 def post_new_university():
         uuid_value=uuid.uuid4()
+        uuidSalt_value=uuid.uuid4()
         error=apiHelper.check_endpoint_info(request.json,[ "name","bio","university_profile_url","address","city","university_website","contact_phone","email","password"]) 
         if (error==None):
             token = str(uuid_value)
-            salt = str(uuid_value)
+            salt = str(uuidSalt_value)
         elif(error != None):
           return make_response(jsonify(error), 400)
         results = dbhelper.run_procedure('CAll university_signup(?,?,?,?,?,?,?,?,?,?,?)',[request.json.get("name"),request.json.get("bio"),request.json.get("university_profile_url"),request.json.get("address"),request.json.get("city"),request.json.get("university_website"),request.json.get("contact_phone"),request.json.get("email"),request.json.get("password"),token,salt])
@@ -41,11 +43,24 @@ def post_new_login():
 
 # University  API Logout  DELETE  API
 @app.delete('/api/university-logout')
-def logOut_client():
+def logOut_university():
         error=apiHelper.check_endpoint_info(request.headers,["token"]) 
         if (error !=None):
           return make_response(jsonify(error), 400)
         results = dbhelper.run_procedure('CAll logout_user(?)',[request.headers.get("token")])
+        if(type(results)==list):
+            return make_response(jsonify(results), 200)
+        else:
+            return make_response(jsonify(results), 500) 
+
+# University Remove univeristy account  DELETE  API
+@app.delete('/api/remove-university')
+def remove_university():
+        error=apiHelper.check_endpoint_info(request.json,["email","password"]) 
+        headererror=apiHelper.check_endpoint_info(request.headers,["token"]) 
+        if (error != None and headererror != None):
+         return make_response(jsonify(error), 400)
+        results = dbhelper.run_procedure('CAll delete_university(?,?,?)',[request.json.get("email"),request.json.get("password"),request.headers.get("token")])
         if(type(results)==list):
             return make_response(jsonify(results), 200)
         else:
@@ -76,14 +91,37 @@ def add_dorm_room():
     else:
       return make_response(jsonify(results), 500)  
 
+# University Update  info  PATCH  API 
+@app.patch('/api/university')
+def edite_uni_info():
+    headerError = apiHelper.check_endpoint_info(request.headers, ["token"])
+    error = apiHelper.check_endpoint_info(request.json, ["uniUpdate_info", "university_id"])
+
+    if error is not None or headerError is not None:
+        return make_response(jsonify(error), 400)
+
+    uniUpdateInfo = request.json.get("uniUpdate_info")
+    uniUpdateInfoStr = json.dumps(uniUpdateInfo)  # Convert JSON object to JSON string
+    universityId = request.json.get("university_id")
+    token = request.headers.get("token")
+
+    results = dbhelper.run_procedure('CALL update_university_info(?,?,?)', [uniUpdateInfoStr, universityId, token])
+
+    if isinstance(results, list):
+        return make_response(jsonify(results), 200)
+    else:
+        return make_response(jsonify(results), 500)
+
+########(Usre API)######
 # User API Registering a User/signin-up  
 @app.post('/api/user')
 def post_new_user():
         uuid_value=uuid.uuid4()
+        uuidSalt_value=uuid.uuid4()
         error=apiHelper.check_endpoint_info(request.json,[ "username","first_name","last_name","phone_number","email","password","user_profile_url"]) 
         if (error==None):
             token = str(uuid_value)
-            salt = str(uuid_value)
+            salt = str(uuidSalt_value)
         elif(error != None):
           return make_response(jsonify(error), 400)
         results = dbhelper.run_procedure('CAll singnup_user(?,?,?,?,?,?,?,?,?)',[request.json.get("username"),request.json.get("first_name"),request.json.get("last_name"),request.json.get("phone_number"),request.json.get("email"),request.json.get("password"),request.json.get("user_profile_url"),token,salt])
@@ -115,6 +153,39 @@ def logOut_user():
             return make_response(jsonify(results), 200)
         else:
             return make_response(jsonify(results), 500)
+        
+# User Remove user account  DELETE  API
+@app.delete('/api/remove-user')
+def remove_user():
+        error=apiHelper.check_endpoint_info(request.json,["email","password"]) 
+        headererror=apiHelper.check_endpoint_info(request.headers,["token"]) 
+        if (error != None and headererror != None):
+         return make_response(jsonify(error), 400)
+        results = dbhelper.run_procedure('CAll delete_user(?,?,?)',[request.json.get("email"),request.json.get("password"),request.headers.get("token")])
+        if(type(results)==list):
+            return make_response(jsonify(results), 200)
+        else:
+            return make_response(jsonify(results), 500) 
+
+# User info update  PATCH  API 
+@app.patch('/api/user')
+def edite_user_info():
+    headerError = apiHelper.check_endpoint_info(request.headers, ["token"])
+    error = apiHelper.check_endpoint_info(request.json, ["userUpdate_info", "user_id"])
+
+    if error is not None or headerError is not None:
+        return make_response(jsonify(error), 400)
+    userUpdateInfo = request.json.get("userUpdate_info")
+    userUpdateInfoStr = json.dumps(userUpdateInfo)  # Convert JSON object to JSON string
+    userId = request.json.get("user_id")
+    token = request.headers.get("token")
+
+    results = dbhelper.run_procedure('CALL user_info_update(?,?,?)', [userUpdateInfoStr, userId, token])
+
+    if isinstance(results, list):
+        return make_response(jsonify(results), 200)
+    else:
+        return make_response(jsonify(results), 500)
 
 if (dbcreds.production_mode == True):
     print("Running in Production Mode")
