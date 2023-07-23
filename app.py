@@ -1,4 +1,4 @@
-from flask import Flask, request, make_response,jsonify
+from flask import Flask, request, make_response,jsonify,send_from_directory
 import dbhelper
 import apiHelper
 import dbcreds
@@ -10,31 +10,51 @@ app=Flask(__name__)
 
 CORS(app)
 
+# Adding a line that restricts the size of a file being uploaded
+# In this example, I only allow images up to 0.5 MB in size
+app.config['MAX_CONTENT_LENGTH'] = 0.5 * 1000000
+
 ########(University API)######
 # University  POST API Registering a University/signin-up  
 @app.post('/api/university')
 def post_new_university():
         uuid_value=uuid.uuid4()
         uuidSalt_value=uuid.uuid4()
-        error=apiHelper.check_endpoint_info(request.json,[ "name","bio","university_profile_url","address","city","university_website","contact_phone","email","password"]) 
-        if (error==None):
+        error=apiHelper.check_endpoint_info(request.form,[ "name","bio","address","city","website","phone_number","state","zip","country","email","password"]) 
+        print(request.form)
+        print(request.files)
+        print(request.files['file'])
+        if error is None:
             token = str(uuid_value)
             salt = str(uuidSalt_value)
         elif(error != None):
-          return make_response(jsonify(error), 400)
-        results = dbhelper.run_procedure('CAll university_signup(?,?,?,?,?,?,?,?,?,?,?)',[request.json.get("name"),request.json.get("bio"),request.json.get("university_profile_url"),request.json.get("address"),request.json.get("city"),request.json.get("university_website"),request.json.get("contact_phone"),request.json.get("email"),request.json.get("password"),token,salt])
+            return make_response(jsonify(error), 400)
+        
+        is_valid =apiHelper.check_endpoint_info(request.files, ['file'])
+        if(is_valid != None):
+            return make_response(jsonify(is_valid), 400)
+            # Save the image using the helper found in apihelpers
+        filename =apiHelper.save_file(request.files['file'])
+        print(filename)
+            # If the filename is None something has gone wrong
+        if(filename == None):
+            return make_response(jsonify("Sorry, something has gone wrong"), 500)
+        print(request)
+        # ( username, first_name, last_name,description, phone_number, email, password ) = request.form
+        # print(username, first_name, request.files['file'].filename)
+        results = dbhelper.run_procedure('CAll university_signup(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[request.form.get('name'),request.form.get('bio'),filename,request.form.get('address'),request.form.get('city'),request.form.get('website'),request.form.get('phone_number'),request.form.get('state'),request.form.get('zip'),request.form.get('country'),request.form.get('email'),request.form.get('password'),token,salt])
         if(type(results)==list):
-             return make_response(jsonify(results), 200)
+                return make_response(jsonify(results), 200)
         else:
             return make_response(jsonify(results), 500) 
 
 # University Login  POST API 
 @app.post('/api/university-login')
 def post_new_login():
-        error=apiHelper.check_endpoint_info(request.json,["email","password"]) 
+        error=apiHelper.check_endpoint_info(request.form,["email","password"]) 
         if (error != None):
          return make_response(jsonify(error), 400)
-        results = dbhelper.run_procedure('CAll university_login(?,?)',[request.json.get("email"),request.json.get("password")])
+        results = dbhelper.run_procedure('CAll university_login(?,?)',[request.form.get('email'),request.form.get('password')])
         if(type(results)==list):
              return make_response(jsonify(results), 200)
         else:
@@ -66,14 +86,17 @@ def remove_university():
         else:
             return make_response(jsonify(results), 500) 
         
+        
 # Adding  dormitory  POST API 
 @app.post('/api/dormitory')
 def add_dormitory():
-    error=apiHelper.check_endpoint_info(request.json,["name","address","facilities"]) 
+    error=apiHelper.check_endpoint_info(request.form,["name","address","city","state","zip","country","facilities"]) 
     errorHeader=apiHelper.check_endpoint_info(request.headers,["token"]) 
     if (error != None and errorHeader !=None):
       return make_response(jsonify(error), 400)
-    results = dbhelper.run_procedure('CAll  insert_new_dormitory(?,?,?,?)',[request.json.get("name"),request.json.get("address"),request.json.get("facilities"),request.headers.get("token")])
+    facilities = request.form.get("facilities")
+    print(facilities)
+    results = dbhelper.run_procedure('CAll  insert_new_dormitory(?,?,?,?,?,?,?,?)',[request.form.get("name"),request.form.get("address"),request.form.get("city"),request.form.get("state"),request.form.get("zip"),request.form.get("country"),facilities,request.headers.get("token")])
     if(type(results)==list):
         return make_response(jsonify(results), 200)
     else:
@@ -85,11 +108,41 @@ def add_dorm_room():
     error=apiHelper.check_endpoint_info(request.json,["room_number","floor_name","room_type","capacity","avilablity_status","monthly_rent","facilities","dormitory_id"]) 
     if (error != None ):
       return make_response(jsonify(error), 400)
+    
+    facility=request.json.get("facilities")
+    print(facility)
     results = dbhelper.run_procedure('CAll  insret_new_room(?,?,?,?,?,?,?,?)',[request.json.get("room_number"),request.json.get("floor_name"),request.json.get("room_type"),request.json.get("capacity"),request.json.get("avilablity_status"),request.json.get("monthly_rent"),request.json.get("facilities"),request.json.get("dormitory_id")])
     if(type(results)==list):
         return make_response(jsonify(results), 200)
     else:
       return make_response(jsonify(results), 500)  
+    
+# get all Dormitories API get university info
+@app.get('/api/all-dormitories')
+def get_all_dormitories():
+        error=apiHelper.check_endpoint_info(request.args,["university_id"]) 
+        if (error !=None):
+          return make_response(jsonify(error), 400)
+        results = dbhelper.run_procedure('CAll get_all_dormitory(?)',[request.args.get("university_id")])
+        if(type(results)==list):
+            print(results)
+            return make_response((results), 200)
+        else:
+            return make_response((results), 500) 
+
+            return make_response(jsonify(results), 500) 
+# Delete Menu
+@app.delete('/api/dormitory')
+def delete_dorm():
+        error=apiHelper.check_endpoint_info(request.json,["id"]) 
+        if (error != None):
+          return make_response(jsonify(error), 400)
+        results = dbhelper.run_procedure('CAll delete_dormitory(?)',[request.json.get("id")])
+        if(type(results)==list):
+             return make_response(jsonify(results), 200)
+        else:
+            return make_response(jsonify(results), 500) 
+# Edite Menu
 
 # University Update  info  PATCH  API 
 @app.patch('/api/university')
@@ -103,89 +156,45 @@ def edite_uni_info():
     uniUpdateInfo = request.json.get("uniUpdate_info")
     uniUpdateInfoStr = json.dumps(uniUpdateInfo)  # Convert JSON object to JSON string
     universityId = request.json.get("university_id")
-    token = request.headers.get("token")
-
-    results = dbhelper.run_procedure('CALL update_university_info(?,?,?)', [uniUpdateInfoStr, universityId, token])
+    token = request.headers.get("token") 
+    results = dbhelper.run_procedure('CALL update_university_info(?,?,?)', [uniUpdateInfoStr, universityId, token])  
 
     if isinstance(results, list):
         return make_response(jsonify(results), 200)
     else:
         return make_response(jsonify(results), 500)
 
-########(Usre API)######
-# User API Registering a User/signin-up  
-@app.post('/api/user')
-def post_new_user():
-        uuid_value=uuid.uuid4()
-        uuidSalt_value=uuid.uuid4()
-        error=apiHelper.check_endpoint_info(request.json,[ "username","first_name","last_name","phone_number","email","password","user_profile_url"]) 
-        if (error==None):
-            token = str(uuid_value)
-            salt = str(uuidSalt_value)
-        elif(error != None):
-          return make_response(jsonify(error), 400)
-        results = dbhelper.run_procedure('CAll singnup_user(?,?,?,?,?,?,?,?,?)',[request.json.get("username"),request.json.get("first_name"),request.json.get("last_name"),request.json.get("phone_number"),request.json.get("email"),request.json.get("password"),request.json.get("user_profile_url"),token,salt])
-        if(type(results)==list):
-             return make_response(jsonify(results), 200)
-        else:
-            return make_response(jsonify(results), 500) 
-        
-#  User Login  API 
-@app.post('/api/user-login')
-def post_new_userLogin():
-        error=apiHelper.check_endpoint_info(request.json,["email","password"]) 
-        if (error != None):
-         return make_response(jsonify(error), 400)
-        results = dbhelper.run_procedure('CAll user_login(?,?)',[request.json.get("email"),request.json.get("password")])
-        if(type(results)==list):
-             return make_response(jsonify(results), 200)
-        else:
-            return make_response(jsonify(results), 500) 
-
-# User API Logout DELETE  API
-@app.delete('/api/user-logout')
-def logOut_user():
-        error=apiHelper.check_endpoint_info(request.headers,["token"]) 
+# university API get university info
+@app.get('/api/university')
+def get_university_info():
+        error=apiHelper.check_endpoint_info(request.args,["university_id"]) 
         if (error !=None):
           return make_response(jsonify(error), 400)
-        results = dbhelper.run_procedure('CAll logout_user(?)',[request.headers.get("token")])
+        results = dbhelper.run_procedure('CAll get_universty_info(?)',[request.args.get("university_id")])
         if(type(results)==list):
-            return make_response(jsonify(results), 200)
+            print(results)
+            return make_response((results), 200)
         else:
-            return make_response(jsonify(results), 500)
+            return make_response((results), 500) 
         
-# User Remove user account  DELETE  API
-@app.delete('/api/remove-user')
-def remove_user():
-        error=apiHelper.check_endpoint_info(request.json,["email","password"]) 
-        headererror=apiHelper.check_endpoint_info(request.headers,["token"]) 
-        if (error != None and headererror != None):
-         return make_response(jsonify(error), 400)
-        results = dbhelper.run_procedure('CAll delete_user(?,?,?)',[request.json.get("email"),request.json.get("password"),request.headers.get("token")])
+
+# university API get university images
+@app.get('/api/university-image')
+def get_university_image():
+        error=apiHelper.check_endpoint_info(request.args,["university_id"]) 
+        if (error !=None):
+          return make_response(jsonify(error), 400)
+        results = dbhelper.run_procedure('CAll get_universty_info(?)',[request.args.get("university_id")])
         if(type(results)==list):
-            return make_response(jsonify(results), 200)
+            print(results)
+
+            image=  send_from_directory('images', results[0]['filename'] )
+            return make_response((image), 200)
         else:
-            return make_response(jsonify(results), 500) 
+            return make_response((image), 500) 
+        
+        
 
-# User info update  PATCH  API 
-@app.patch('/api/user')
-def edite_user_info():
-    headerError = apiHelper.check_endpoint_info(request.headers, ["token"])
-    error = apiHelper.check_endpoint_info(request.json, ["userUpdate_info", "user_id"])
-
-    if error is not None or headerError is not None:
-        return make_response(jsonify(error), 400)
-    userUpdateInfo = request.json.get("userUpdate_info")
-    userUpdateInfoStr = json.dumps(userUpdateInfo)  # Convert JSON object to JSON string
-    userId = request.json.get("user_id")
-    token = request.headers.get("token")
-
-    results = dbhelper.run_procedure('CALL user_info_update(?,?,?)', [userUpdateInfoStr, userId, token])
-
-    if isinstance(results, list):
-        return make_response(jsonify(results), 200)
-    else:
-        return make_response(jsonify(results), 500)
 
 if (dbcreds.production_mode == True):
     print("Running in Production Mode")
@@ -196,5 +205,8 @@ else:
     CORS(app)
     print("Running in Testing/Development Mode!")
     
+    
+app.run(debug=True)  
 
-app.run(debug=True) 
+
+
