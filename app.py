@@ -85,11 +85,10 @@ def remove_university():
             return make_response(jsonify(results), 200)
         else:
             return make_response(jsonify(results), 500) 
-        
-        
 # Adding  dormitory  POST API 
 @app.post('/api/dormitory')
 def add_dormitory():
+    print(request.form)
     error=apiHelper.check_endpoint_info(request.form,["name","address","city","state","zip","country","facilities"]) 
     errorHeader=apiHelper.check_endpoint_info(request.headers,["token"]) 
     if (error != None and errorHeader !=None):
@@ -102,6 +101,24 @@ def add_dormitory():
     else:
       return make_response(jsonify(results), 500)
 
+#update dormitory Patch API
+@app.patch('/api/update-dormitory')
+def update_dormitory():
+    error=apiHelper.check_endpoint_info(request.form,["id"]) 
+    errorHeader=apiHelper.check_endpoint_info(request.headers,["token"]) 
+    if (error != None and errorHeader !=None):
+      return make_response(jsonify(error), 400)
+      #name=request.form.get("name") #empty is None
+    facilities = request.form.get("facilities")
+    print(facilities)
+    results = dbhelper.run_procedure('CAll  update_dormitory(?,?,?,?,?,?,?,?,?)',[request.form.get("id"),request.form.get("name"),request.form.get("address"),request.form.get("city"),request.form.get("state"),request.form.get("zip"),request.form.get("country"),facilities,request.headers.get("token")])
+    if(type(results)==list):
+        return make_response(jsonify(results), 200)
+    else:
+      return make_response(jsonify(results), 500)
+
+
+##### dorm room ##### 
 # Adding  dorm-room  POST API 
 @app.post('/api/dorm-room')
 def add_dorm_room():
@@ -130,8 +147,7 @@ def get_all_dormitories():
         else:
             return make_response((results), 500) 
 
-            return make_response(jsonify(results), 500) 
-# Delete Menu
+# Delete Dormitory
 @app.delete('/api/dormitory')
 def delete_dorm():
         error=apiHelper.check_endpoint_info(request.json,["id"]) 
@@ -193,8 +209,21 @@ def get_university_image():
         else:
             return make_response((image), 500) 
         
-        
 
+###### University  Dorm Rooms#########
+   
+# get all Dorm Rooms API GET
+@app.get('/api/all-rooms')
+def get_all_rooms():
+        error=apiHelper.check_endpoint_info(request.args,["dormitory_id"]) 
+        if (error !=None):
+          return make_response(jsonify(error), 400)
+        results = dbhelper.run_procedure('CAll get_all_rooms(?)',[request.args.get("dormitory_id")])
+        if(type(results)==list):
+            print(results)
+            return make_response((results), 200)
+        else:
+            return make_response((results), 500) 
 
 if (dbcreds.production_mode == True):
     print("Running in Production Mode")
