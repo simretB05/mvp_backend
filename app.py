@@ -118,22 +118,7 @@ def update_dormitory():
       return make_response(jsonify(results), 500)
 
 
-##### dorm room ##### 
-# Adding  dorm-room  POST API 
-@app.post('/api/dorm-room')
-def add_dorm_room():
-    error=apiHelper.check_endpoint_info(request.json,["room_number","floor_name","room_type","capacity","avilablity_status","monthly_rent","facilities","dormitory_id"]) 
-    if (error != None ):
-      return make_response(jsonify(error), 400)
-    
-    facility=request.json.get("facilities")
-    print(facility)
-    results = dbhelper.run_procedure('CAll  insret_new_room(?,?,?,?,?,?,?,?)',[request.json.get("room_number"),request.json.get("floor_name"),request.json.get("room_type"),request.json.get("capacity"),request.json.get("avilablity_status"),request.json.get("monthly_rent"),request.json.get("facilities"),request.json.get("dormitory_id")])
-    if(type(results)==list):
-        return make_response(jsonify(results), 200)
-    else:
-      return make_response(jsonify(results), 500)  
-    
+##### dorm room #####     
 # get all Dormitories API get university info
 @app.get('/api/all-dormitories')
 def get_all_dormitories():
@@ -159,7 +144,6 @@ def delete_dorm():
         else:
             return make_response(jsonify(results), 500) 
 # Edite Menu
-
 # University Update  info  PATCH  API 
 @app.patch('/api/university')
 def edite_uni_info():
@@ -193,7 +177,6 @@ def get_university_info():
         else:
             return make_response((results), 500) 
         
-
 # university API get university images
 @app.get('/api/university-image')
 def get_university_image():
@@ -211,7 +194,6 @@ def get_university_image():
         
 
 ###### University  Dorm Rooms#########
-   
 # get all Dorm Rooms API GET
 @app.get('/api/all-rooms')
 def get_all_rooms():
@@ -224,6 +206,30 @@ def get_all_rooms():
             return make_response((results), 200)
         else:
             return make_response((results), 500) 
+        
+# Rooms  POST API   For adding New Rooms 
+# Adding  dorm-room  POST API 
+@app.post('/api/dorm-room')
+def post_new_Room():
+        error=apiHelper.check_endpoint_info(request.form,[ "room_number","floor_name","room_type","capacity","avilablity_status","monthly_rent","facilities","dormitory_id"]) 
+        fileArray=[]
+        if (error != None ):
+            return make_response(jsonify(error), 400)
+        print(request.files)
+        is_valid =apiHelper.check_endpoint_info(request.files, ['file[]'])
+        if(is_valid != None):
+            return make_response(jsonify(is_valid), 400)
+        for file_key in request.files.getlist('file[]'):
+            filename =apiHelper.save_file(request.files['file[]'])
+            if(filename == None):
+                return make_response(jsonify("Sorry, something has gone wrong"), 500)
+            fileArray.append(filename)
+        fileString=json.dumps(fileArray)
+        results = dbhelper.run_procedure('CAll  insret_new_room(?,?,?,?,?,?,?,?,?)',[request.form.get('room_number'),request.form.get('floor_name'),request.form.get('room_type'),request.form.get('capacity'),request.form.get('avilablity_status'),request.form.get('monthly_rent'),request.form.get('facilities'),fileString,request.form.get('dormitory_id')])
+        if(type(results)==list):
+                return make_response(jsonify(results), 200)
+        else:
+            return make_response(jsonify(results), 500) 
 
 if (dbcreds.production_mode == True):
     print("Running in Production Mode")

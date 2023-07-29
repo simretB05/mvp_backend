@@ -18,10 +18,28 @@ def save_file(file):
         try:
             # Use built-in functions to save the file in the images folder
             # You can put any path you want, in my example I just need them in the images folder right here
-            file.save(os.path.join('images', filename))
+            file.save(os.path.join('rooms_image', filename))
             # Return the filename so it can be stored in the DB
             return filename
         except Exception as error:
             # If something goes wrong, print out to the terminal and return nothing
             print("FILE SAVE ERROR: ", error)
     # If any conditional is not met or an error occurs, None is returned
+
+
+## for multiple images
+
+# def multi_save_file(file):
+
+#     print(file)
+
+#     for item in file:
+  
+#         if('.' in item.filename and item.filename.rsplit('.', 1)[1].lower() in ['gif','png','jpg','jpeg', 'webp', 'pdf']):
+        
+#             filename = uuid4().hex + '.' + item.filename.rsplit('.', 1)[1].lower()
+#             try:
+#                 item.save(os.path.join('rooms_images', filename))
+#                 return filename
+#             except Exception as error:
+#                 print("FILE SAVE ERROR: ", error)
