@@ -159,14 +159,24 @@ def get_university_image():
 # API Endpoint for adding a new dormitory
 @app.post('/api/dormitory')
 def add_dormitory():
+    fileArray=[]
     # Endpoint for adding a new dormitory to a university.
     # Requires various parameters including name, address, facilities, etc.
     error=apiHelper.check_endpoint_info(request.form,["name","address","city","state","zip","country","facilities"]) 
     errorHeader=apiHelper.check_endpoint_info(request.headers,["token"]) 
     if (error != None and errorHeader !=None):
       return make_response(jsonify(error), 400)
+    is_valid =apiHelper.check_endpoint_info(request.files, ['file[]'])
+    if(is_valid != None):
+            return make_response(jsonify(is_valid), 400)
+    for file_key in request.files.getlist('file[]'):
+        filename =apiHelper.multi_save_file(file_key)
+        if(filename == None):
+            return make_response(jsonify("Sorry, something has gone wrong"), 500)
+        fileArray.append(filename)
+        fileString=json.dumps(fileArray)
     facilities = request.form.get("facilities")
-    results = dbhelper.run_procedure('CAll  insert_new_dormitory(?,?,?,?,?,?,?,?)',[request.form.get("name"),request.form.get("address"),request.form.get("city"),request.form.get("state"),request.form.get("zip"),request.form.get("country"),facilities,request.headers.get("token")])
+    results = dbhelper.run_procedure('CAll  insert_new_dormitory(?,?,?,?,?,?,?,?,?)',[request.form.get("name"),request.form.get("address"),request.form.get("city"),request.form.get("state"),request.form.get("zip"),request.form.get("country"),facilities, fileString,request.headers.get("token")])
     if(type(results)==list):
         return make_response(jsonify(results), 200)
     else:
