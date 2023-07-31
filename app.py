@@ -18,6 +18,9 @@ CORS(app)
 app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024
 
 def get_base64_image(image_filename):
+    # Helper function to read an image file, convert it to base64, and return the base64 data.
+    # Used to handle images stored in 'rooms_images' folder.
+    # If any error occurs during the process, it returns None.
     image_folder = 'rooms_images'
     image_path = os.path.join(image_folder, image_filename)
     try:
@@ -34,6 +37,9 @@ def get_base64_image(image_filename):
 # University  POST API Registering a University/signin-up  
 @app.post('/api/university')
 def post_new_university():
+    # Endpoint for registering a new university. It expects several parameters in the form data.
+    # Generates a UUID and UUID salt for token and password hashing purposes.
+    # Also allows uploading an image as a logo for the university.
         uuid_value=uuid.uuid4()
         uuidSalt_value=uuid.uuid4()
         error=apiHelper.check_endpoint_info(request.form,[ "name","bio","address","city","website","phone_number","state","zip","country","email","password"]) 
@@ -59,8 +65,9 @@ def post_new_university():
         else:
             return make_response(jsonify(results), 500) 
 
-# University Login  POST API 
+# API Endpoint for university login
 @app.post('/api/university-login')
+    # Endpoint for university login. Expects the email and password for authentication.
 def post_new_login():
         error=apiHelper.check_endpoint_info(request.form,["email","password"]) 
         if (error != None):
@@ -72,8 +79,9 @@ def post_new_login():
             return make_response(jsonify(results), 500) 
         
 
-# University  API Logout  DELETE  API
+# API Endpoint for university logout
 @app.delete('/api/university-logout')
+# Endpoint for university logout. Expects the authentication token.
 def logOut_university():
         error=apiHelper.check_endpoint_info(request.headers,["token"]) 
         if (error !=None):
@@ -84,9 +92,10 @@ def logOut_university():
         else:
             return make_response(jsonify(results), 500) 
 
-# University Remove univeristy account  DELETE  API
+# API Endpoint for removing a university account
 @app.delete('/api/remove-university')
 def remove_university():
+ # Endpoint for removing a university account. Requires email, password, and authentication token.
         error=apiHelper.check_endpoint_info(request.json,["email","password"]) 
         headererror=apiHelper.check_endpoint_info(request.headers,["token"]) 
         if (error != None and headererror != None):
@@ -96,63 +105,11 @@ def remove_university():
             return make_response(jsonify(results), 200)
         else:
             return make_response(jsonify(results), 500) 
-# Adding  dormitory  POST API 
-@app.post('/api/dormitory')
-def add_dormitory():
-    error=apiHelper.check_endpoint_info(request.form,["name","address","city","state","zip","country","facilities"]) 
-    errorHeader=apiHelper.check_endpoint_info(request.headers,["token"]) 
-    if (error != None and errorHeader !=None):
-      return make_response(jsonify(error), 400)
-    facilities = request.form.get("facilities")
-    results = dbhelper.run_procedure('CAll  insert_new_dormitory(?,?,?,?,?,?,?,?)',[request.form.get("name"),request.form.get("address"),request.form.get("city"),request.form.get("state"),request.form.get("zip"),request.form.get("country"),facilities,request.headers.get("token")])
-    if(type(results)==list):
-        return make_response(jsonify(results), 200)
-    else:
-      return make_response(jsonify(results), 500)
-
-#update dormitory Patch API
-@app.patch('/api/update-dormitory')
-def update_dormitory():
-    error=apiHelper.check_endpoint_info(request.form,["id"]) 
-    errorHeader=apiHelper.check_endpoint_info(request.headers,["token"]) 
-    if (error != None and errorHeader !=None):
-      return make_response(jsonify(error), 400)
-      #name=request.form.get("name") #empty is None
-    facilities = request.form.get("facilities")
-    results = dbhelper.run_procedure('CAll  update_dormitory(?,?,?,?,?,?,?,?,?)',[request.form.get("id"),request.form.get("name"),request.form.get("address"),request.form.get("city"),request.form.get("state"),request.form.get("zip"),request.form.get("country"),facilities,request.headers.get("token")])
-    if(type(results)==list):
-        return make_response(jsonify(results), 200)
-    else:
-      return make_response(jsonify(results), 500)
-
-
-##### dorm room #####     
-# get all Dormitories API get university info
-@app.get('/api/all-dormitories')
-def get_all_dormitories():
-        error=apiHelper.check_endpoint_info(request.args,["university_id"]) 
-        if (error !=None):
-          return make_response(jsonify(error), 400)
-        results = dbhelper.run_procedure('CAll get_all_dormitory(?)',[request.args.get("university_id")])
-        if(type(results)==list):
-            return make_response((results), 200)
-        else:
-            return make_response((results), 500) 
-
-# Delete Dormitory
-@app.delete('/api/dormitory')
-def delete_dorm():
-        error=apiHelper.check_endpoint_info(request.json,["id"]) 
-        if (error != None):
-          return make_response(jsonify(error), 400)
-        results = dbhelper.run_procedure('CAll delete_dormitory(?)',[request.json.get("id")])
-        if(type(results)==list):
-             return make_response(jsonify(results), 200)
-        else:
-            return make_response(jsonify(results), 500) 
-# Edite Menu
-# University Update  info  PATCH  API 
+        
+ # API Endpoint to update university information
 @app.patch('/api/university')
+ #Endpoint to update university information.
+ # Expects JSON data with updated information and university ID.
 def edite_uni_info():
     headerError = apiHelper.check_endpoint_info(request.headers, ["token"])
     error = apiHelper.check_endpoint_info(request.json, ["uniUpdate_info", "university_id"])
@@ -171,8 +128,9 @@ def edite_uni_info():
     else:
         return make_response(jsonify(results), 500)
 
-# university API get university info
+# API Endpoint to get university information
 @app.get('/api/university')
+# Endpoint to get university information by providing its ID.
 def get_university_info():
         error=apiHelper.check_endpoint_info(request.args,["university_id"]) 
         if (error !=None):
@@ -183,8 +141,9 @@ def get_university_info():
         else:
             return make_response((results), 500) 
         
-# university API get university images
+# API Endpoint to get university images
 @app.get('/api/university-image')
+ # Endpoint to get university images by providing its ID.
 def get_university_image():
         error=apiHelper.check_endpoint_info(request.args,["university_id"]) 
         if (error !=None):
@@ -196,9 +155,73 @@ def get_university_image():
         else:
             return make_response((image), 500) 
         
-###### University  Dorm Rooms#########
-# get all Dorm Rooms API GET
+###### University  Dormitory ########## 
+# API Endpoint for adding a new dormitory
+@app.post('/api/dormitory')
+def add_dormitory():
+    # Endpoint for adding a new dormitory to a university.
+    # Requires various parameters including name, address, facilities, etc.
+    error=apiHelper.check_endpoint_info(request.form,["name","address","city","state","zip","country","facilities"]) 
+    errorHeader=apiHelper.check_endpoint_info(request.headers,["token"]) 
+    if (error != None and errorHeader !=None):
+      return make_response(jsonify(error), 400)
+    facilities = request.form.get("facilities")
+    results = dbhelper.run_procedure('CAll  insert_new_dormitory(?,?,?,?,?,?,?,?)',[request.form.get("name"),request.form.get("address"),request.form.get("city"),request.form.get("state"),request.form.get("zip"),request.form.get("country"),facilities,request.headers.get("token")])
+    if(type(results)==list):
+        return make_response(jsonify(results), 200)
+    else:
+      return make_response(jsonify(results), 500)
+
+# API Endpoint for updating dormitory information
+@app.patch('/api/update-dormitory')
+def update_dormitory():
+     # Endpoint for updating dormitory information.
+    # Requires dormitory ID and various parameters to update.
+    error=apiHelper.check_endpoint_info(request.form,["id"]) 
+    errorHeader=apiHelper.check_endpoint_info(request.headers,["token"]) 
+    if (error != None and errorHeader !=None):
+      return make_response(jsonify(error), 400)
+      #name=request.form.get("name") #empty is None
+    facilities = request.form.get("facilities")
+    results = dbhelper.run_procedure('CAll  update_dormitory(?,?,?,?,?,?,?,?,?)',[request.form.get("id"),request.form.get("name"),request.form.get("address"),request.form.get("city"),request.form.get("state"),request.form.get("zip"),request.form.get("country"),facilities,request.headers.get("token")])
+    if(type(results)==list):
+        return make_response(jsonify(results), 200)
+    else:
+      return make_response(jsonify(results), 500)
+
+
+# API Endpoint to get all dormitories of a university
+@app.get('/api/all-dormitories')
+def get_all_dormitories():
+# Endpoint to get all dormitories of a university.
+# Requires university ID to fetch the data.
+        error=apiHelper.check_endpoint_info(request.args,["university_id"]) 
+        if (error !=None):
+          return make_response(jsonify(error), 400)
+        results = dbhelper.run_procedure('CAll get_all_dormitory(?)',[request.args.get("university_id")])
+        if(type(results)==list):
+            return make_response((results), 200)
+        else:
+            return make_response((results), 500) 
+
+#API Endpoint to delete a dormitory
+@app.delete('/api/dormitory')
+def delete_dorm():
+        # Endpoint to delete a dormitory by providing its ID.
+        error=apiHelper.check_endpoint_info(request.json,["id"]) 
+        if (error != None):
+          return make_response(jsonify(error), 400)
+        results = dbhelper.run_procedure('CAll delete_dormitory(?)',[request.json.get("id")])
+        if(type(results)==list):
+             return make_response(jsonify(results), 200)
+        else:
+            return make_response(jsonify(results), 500) 
+        
+
+###### University  Dormitory Rooms ########## 
+# API Endpoint to get all rooms of a dormitory
 @app.get('/api/all-rooms')
+ # Endpoint to get all rooms of a dormitory by providing its ID.
 def get_all_rooms():
         error=apiHelper.check_endpoint_info(request.args,["dormitory_id"]) 
         if (error !=None):
@@ -209,9 +232,12 @@ def get_all_rooms():
         else:
             return make_response((results), 500) 
         
-# Rooms  POST API   For adding New Rooms 
-# Adding  dorm-room  POST API 
+# API Endpoint to add a new dorm room
+# # Adding  dorm-room  POST API 
 @app.post('/api/dorm-room')
+ # Endpoint for adding a new dormitory room to a dormitory.
+    # Expects various parameters including room number, floor name, room type, etc.
+    # Allows uploading multiple images as room images.
 def post_new_Room():
         error=apiHelper.check_endpoint_info(request.form,[ "room_number","floor_name","room_type","capacity","avilablity_status","monthly_rent","facilities","dormitory_id"]) 
         fileArray=[]
@@ -232,14 +258,12 @@ def post_new_Room():
         else:
             return make_response(jsonify(results), 500) 
         
-# Rooms-Image API get Rooms images
+# API Endpoint to get dorm room images
 @app.get('/api/room-image')
+# Endpoint to get dorm room images.
+# # Fetches all room images from the database and returns base64-encoded images.
 def get_room_image():
-    image_list = []
-    # error = apiHelper.check_endpoint_info(request.args, ["]) 
-    # if error is not None:
-    #     return make_response(jsonify(error), 400)
-        
+    image_list = []       
     results = dbhelper.run_procedure('CAll get_rooms_image()', [])
     if(type(results)==list):
         for item in results:
@@ -250,9 +274,10 @@ def get_room_image():
     else:
       return make_response(jsonify(results), 500)
                 
-# Delete Dormitory
+# API Endpoint to delete a dorm room
 @app.delete('/api/dorm-room')
 def delete_room():
+# Endpoint to delete a dormitory room by providing its ID.
         error=apiHelper.check_endpoint_info(request.json,["id"]) 
         if (error != None):
           return make_response(jsonify(error), 400)
@@ -263,15 +288,17 @@ def delete_room():
             return make_response(jsonify(results), 500) 
 
 if (dbcreds.production_mode == True):
+    # If running in production mode, use bjoern server to run the app.
     print("Running in Production Mode")
     import bjoern # type: ignore
     bjoern.run(app, "0.0.0.0", 5001)
 else: 
+     # If running in testing/development mode, enable CORS and run the app using Flask built-in server.
     from flask_cors import CORS
     CORS(app)
     print("Running in Testing/Development Mode!")
     
-
+# Running the Flask application in debug mode
 app.run(debug=True)  
 
 
