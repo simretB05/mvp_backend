@@ -2,8 +2,11 @@ from flask import Flask, request, make_response,jsonify,send_from_directory
 import dbhelper
 import apiHelper
 import dbcreds
+import base64
+import os
 import uuid
 import json
+
 from flask_cors import CORS
 
 app=Flask(__name__)
@@ -11,8 +14,21 @@ app=Flask(__name__)
 CORS(app)
 
 # Adding a line that restricts the size of a file being uploaded
-# In this example, I only allow images up to 0.5 MB in size
-app.config['MAX_CONTENT_LENGTH'] = 0.5 * 1000000
+# In this example, I only allow images up to 0.5 MB 0.5 * 1000000 in size or # 2 megabytes in bytes,2 * 1024 * 1024 
+app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024
+
+def get_base64_image(image_filename):
+    image_folder = 'rooms_images'
+    image_path = os.path.join(image_folder, image_filename)
+    try:
+        with open(image_path, 'rb') as image_file:
+            image_data = image_file.read()
+            base64_image = base64.b64encode(image_data).decode('utf-8')
+        return base64_image
+    except Exception as e:
+        print(f"Error reading image '{image_filename}': {str(e)}")
+        return None
+
 
 ########(University API)######
 # University  POST API Registering a University/signin-up  
@@ -21,9 +37,7 @@ def post_new_university():
         uuid_value=uuid.uuid4()
         uuidSalt_value=uuid.uuid4()
         error=apiHelper.check_endpoint_info(request.form,[ "name","bio","address","city","website","phone_number","state","zip","country","email","password"]) 
-        print(request.form)
-        print(request.files)
-        print(request.files['file'])
+        
         if error is None:
             token = str(uuid_value)
             salt = str(uuidSalt_value)
@@ -35,13 +49,10 @@ def post_new_university():
             return make_response(jsonify(is_valid), 400)
             # Save the image using the helper found in apihelpers
         filename =apiHelper.save_file(request.files['file'])
-        print(filename)
             # If the filename is None something has gone wrong
         if(filename == None):
             return make_response(jsonify("Sorry, something has gone wrong"), 500)
-        print(request)
         # ( username, first_name, last_name,description, phone_number, email, password ) = request.form
-        # print(username, first_name, request.files['file'].filename)
         results = dbhelper.run_procedure('CAll university_signup(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[request.form.get('name'),request.form.get('bio'),filename,request.form.get('address'),request.form.get('city'),request.form.get('website'),request.form.get('phone_number'),request.form.get('state'),request.form.get('zip'),request.form.get('country'),request.form.get('email'),request.form.get('password'),token,salt])
         if(type(results)==list):
                 return make_response(jsonify(results), 200)
@@ -88,13 +99,11 @@ def remove_university():
 # Adding  dormitory  POST API 
 @app.post('/api/dormitory')
 def add_dormitory():
-    print(request.form)
     error=apiHelper.check_endpoint_info(request.form,["name","address","city","state","zip","country","facilities"]) 
     errorHeader=apiHelper.check_endpoint_info(request.headers,["token"]) 
     if (error != None and errorHeader !=None):
       return make_response(jsonify(error), 400)
     facilities = request.form.get("facilities")
-    print(facilities)
     results = dbhelper.run_procedure('CAll  insert_new_dormitory(?,?,?,?,?,?,?,?)',[request.form.get("name"),request.form.get("address"),request.form.get("city"),request.form.get("state"),request.form.get("zip"),request.form.get("country"),facilities,request.headers.get("token")])
     if(type(results)==list):
         return make_response(jsonify(results), 200)
@@ -110,7 +119,6 @@ def update_dormitory():
       return make_response(jsonify(error), 400)
       #name=request.form.get("name") #empty is None
     facilities = request.form.get("facilities")
-    print(facilities)
     results = dbhelper.run_procedure('CAll  update_dormitory(?,?,?,?,?,?,?,?,?)',[request.form.get("id"),request.form.get("name"),request.form.get("address"),request.form.get("city"),request.form.get("state"),request.form.get("zip"),request.form.get("country"),facilities,request.headers.get("token")])
     if(type(results)==list):
         return make_response(jsonify(results), 200)
@@ -127,7 +135,6 @@ def get_all_dormitories():
           return make_response(jsonify(error), 400)
         results = dbhelper.run_procedure('CAll get_all_dormitory(?)',[request.args.get("university_id")])
         if(type(results)==list):
-            print(results)
             return make_response((results), 200)
         else:
             return make_response((results), 500) 
@@ -172,7 +179,6 @@ def get_university_info():
           return make_response(jsonify(error), 400)
         results = dbhelper.run_procedure('CAll get_universty_info(?)',[request.args.get("university_id")])
         if(type(results)==list):
-            print(results)
             return make_response((results), 200)
         else:
             return make_response((results), 500) 
@@ -185,14 +191,11 @@ def get_university_image():
           return make_response(jsonify(error), 400)
         results = dbhelper.run_procedure('CAll get_universty_info(?)',[request.args.get("university_id")])
         if(type(results)==list):
-            print(results)
-
             image=  send_from_directory('images', results[0]['filename'] )
             return make_response((image), 200)
         else:
             return make_response((image), 500) 
         
-
 ###### University  Dorm Rooms#########
 # get all Dorm Rooms API GET
 @app.get('/api/all-rooms')
@@ -202,7 +205,6 @@ def get_all_rooms():
           return make_response(jsonify(error), 400)
         results = dbhelper.run_procedure('CAll get_all_rooms(?)',[request.args.get("dormitory_id")])
         if(type(results)==list):
-            print(results)
             return make_response((results), 200)
         else:
             return make_response((results), 500) 
@@ -215,12 +217,11 @@ def post_new_Room():
         fileArray=[]
         if (error != None ):
             return make_response(jsonify(error), 400)
-        print(request.files)
         is_valid =apiHelper.check_endpoint_info(request.files, ['file[]'])
         if(is_valid != None):
             return make_response(jsonify(is_valid), 400)
         for file_key in request.files.getlist('file[]'):
-            filename =apiHelper.save_file(request.files['file[]'])
+            filename =apiHelper.multi_save_file(file_key)
             if(filename == None):
                 return make_response(jsonify("Sorry, something has gone wrong"), 500)
             fileArray.append(filename)
@@ -228,6 +229,36 @@ def post_new_Room():
         results = dbhelper.run_procedure('CAll  insret_new_room(?,?,?,?,?,?,?,?,?)',[request.form.get('room_number'),request.form.get('floor_name'),request.form.get('room_type'),request.form.get('capacity'),request.form.get('avilablity_status'),request.form.get('monthly_rent'),request.form.get('facilities'),fileString,request.form.get('dormitory_id')])
         if(type(results)==list):
                 return make_response(jsonify(results), 200)
+        else:
+            return make_response(jsonify(results), 500) 
+        
+# Rooms-Image API get Rooms images
+@app.get('/api/room-image')
+def get_room_image():
+    image_list = []
+    # error = apiHelper.check_endpoint_info(request.args, ["]) 
+    # if error is not None:
+    #     return make_response(jsonify(error), 400)
+        
+    results = dbhelper.run_procedure('CAll get_rooms_image()', [])
+    if(type(results)==list):
+        for item in results:
+                image_data = get_base64_image(item['images'])
+                item['images'] = image_data
+                image_list.append(item)
+        return make_response(jsonify(images=image_list), 200)
+    else:
+      return make_response(jsonify(results), 500)
+                
+# Delete Dormitory
+@app.delete('/api/dorm-room')
+def delete_room():
+        error=apiHelper.check_endpoint_info(request.json,["id"]) 
+        if (error != None):
+          return make_response(jsonify(error), 400)
+        results = dbhelper.run_procedure('CAll delete_room(?)',[request.json.get("id")])
+        if(type(results)==list):
+             return make_response(jsonify(results), 200)
         else:
             return make_response(jsonify(results), 500) 
 
@@ -240,7 +271,7 @@ else:
     CORS(app)
     print("Running in Testing/Development Mode!")
     
-    
+
 app.run(debug=True)  
 
 
