@@ -1,10 +1,10 @@
 import os
+import base64
 from uuid import uuid4
 def check_endpoint_info(sent_data, expected_data):
     for data  in expected_data:
         if(sent_data.get(data) == None):
             return f'The {data} must be sent!'
-
 
 def save_file(file):
     # Check to see if first, the filename contains a . character. 
@@ -26,12 +26,7 @@ def save_file(file):
             print("FILE SAVE ERROR: ", error)
     # If any conditional is not met or an error occurs, None is returned
 
-
 ## for multiple images
-
-
-
-
 def multi_save_file(file):
     # Check to see if first, the filename contains a . character. 
     # Then, split the filename around the . characters into an array
@@ -51,17 +46,35 @@ def multi_save_file(file):
             # If something goes wrong, print out to the terminal and return nothing
             print("FILE SAVE ERROR: ", error)
     # If any conditional is not met or an error occurs, None is returned
-# def multi_save_file(file):
 
-#     print(file)
+    # Helper function to read an image file, convert it to base64, and return the base64 data.
 
-#     for item in file:
-  
-#         if('.' in item.filename and item.filename.rsplit('.', 1)[1].lower() in ['gif','png','jpg','jpeg', 'webp', 'pdf']):
+def get_base64_image(image_filename):
+    # Used to handle images stored in 'rooms_images' folder.
+    # If any error occurs during the process, it returns None.
+    # Specify the folder where the images are stored. 
+# The variable 'image_folder' holds the directory path 'rooms_images'.
+    image_folder = 'rooms_images'
+    # Combine the folder path 'image_folder' with the filename 'image_filename' to create the full image path.
+# The variable 'image_path' holds the complete path to the image file.
+    image_path = os.path.join(image_folder, image_filename)
+    try:
+         # Open the image file in binary read mode ('rb').
+    # The 'with' statement ensures that the file is properly closed after its suite finishes execution.
+        with open(image_path, 'rb') as image_file:
+                    # Read the image data from the file into the variable 'image_data'.
+    # If the image is read successfully and encoded to base64, return the base64 image data.
+
+            image_data = image_file.read()
+        # If any exception occurs during the process (e.g., file not found, read error,),
+        # print an error message indicating the filename and the specific exception.
+        # Encode the binary image data to base64 format and convert it to a UTF-8 string.
+        # The 'base64.b64encode' function encodes the binary data and returns a bytes object.
+        # The 'decode' method converts the bytes object to a UTF-8 string, which is stored in the variable 'base64_image'
+            base64_image = base64.b64encode(image_data).decode('utf-8')
+        return base64_image
+    except Exception as e:
         
-#             filename = uuid4().hex + '.' + item.filename.rsplit('.', 1)[1].lower()
-#             try:
-#                 item.save(os.path.join('rooms_images', filename))
-#                 return filename
-#             except Exception as error:
-#                 print("FILE SAVE ERROR: ", error)
+        print(f"Error reading image '{image_filename}': {str(e)}")
+            # If there is an error reading the image, return None to indicate failure.
+        return None

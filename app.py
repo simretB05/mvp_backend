@@ -2,8 +2,6 @@ from flask import Flask, request, make_response,jsonify,send_from_directory
 import dbhelper
 import apiHelper
 import dbcreds
-import base64
-import os
 import uuid
 import json
 
@@ -16,21 +14,6 @@ CORS(app)
 # Adding a line that restricts the size of a file being uploaded
 # In this example, I only allow images up to 0.5 MB 0.5 * 1000000 in size or # 2 megabytes in bytes,2 * 1024 * 1024 
 app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024
-
-def get_base64_image(image_filename):
-    # Helper function to read an image file, convert it to base64, and return the base64 data.
-    # Used to handle images stored in 'rooms_images' folder.
-    # If any error occurs during the process, it returns None.
-    image_folder = 'rooms_images'
-    image_path = os.path.join(image_folder, image_filename)
-    try:
-        with open(image_path, 'rb') as image_file:
-            image_data = image_file.read()
-            base64_image = base64.b64encode(image_data).decode('utf-8')
-        return base64_image
-    except Exception as e:
-        print(f"Error reading image '{image_filename}': {str(e)}")
-        return None
 
 
 ########(University API)######
@@ -226,13 +209,38 @@ def delete_dorm():
              return make_response(jsonify(results), 200)
         else:
             return make_response(jsonify(results), 500) 
-        
-
+                
+# API Endpoint to get dorm  images
+@app.get('/api/dorm-image')
+def get_dorm_image():
+    # Endpoint to get dorm  images.
+    # Fetches all dorm images from the database and returns base64-encoded images.
+    image_list = []       
+    results = dbhelper.run_procedure('CAll get_dormitory_images()', [])
+    if(type(results)==list):
+        for item in results:
+                image_data = apiHelper.get_base64_image(item['images'])
+                item['images'] = image_data
+                image_list.append(item)
+        return make_response(jsonify(images=image_list), 200)
+    else:
+      return make_response(jsonify(results), 500)
+                
 ###### University  Dormitory Rooms ########## 
 # API Endpoint to get all rooms of a dormitory
-@app.get('/api/all-rooms')
+
+@app.get('/api/get-all-rooms')
  # Endpoint to get all rooms of a dormitory by providing its ID.
 def get_all_rooms():
+        results = dbhelper.run_procedure('CAll get_every_room()',[])
+        if(type(results)==list):
+            return make_response((results), 200)
+        else:
+            return make_response((results), 500) 
+
+@app.get('/api/all-rooms')
+ # Endpoint to get all rooms of a dormitory by providing its ID.
+def get_all_rooms_by_id():
         error=apiHelper.check_endpoint_info(request.args,["dormitory_id"]) 
         if (error !=None):
           return make_response(jsonify(error), 400)
@@ -277,7 +285,7 @@ def get_room_image():
     results = dbhelper.run_procedure('CAll get_rooms_image()', [])
     if(type(results)==list):
         for item in results:
-                image_data = get_base64_image(item['images'])
+                image_data = apiHelper.get_base64_image(item['images'])
                 item['images'] = image_data
                 image_list.append(item)
         return make_response(jsonify(images=image_list), 200)
