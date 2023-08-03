@@ -69,7 +69,7 @@ def logOut_university():
         error=apiHelper.check_endpoint_info(request.headers,["token"]) 
         if (error !=None):
           return make_response(jsonify(error), 400)
-        results = dbhelper.run_procedure('CAll logout_user(?)',[request.headers.get("token")])
+        results = dbhelper.run_procedure('CAll logout_university(?)',[request.headers.get("token")])
         if(type(results)==list):
             return make_response(jsonify(results), 200)
         else:
@@ -265,24 +265,50 @@ def get_all_rooms_by_id():
     # Expects various parameters including room number, floor name, room type, etc.
     # Allows uploading multiple images as room images.
 def post_new_Room():
-        error=apiHelper.check_endpoint_info(request.form,[ "room_number","floor_name","room_type","capacity","avilablity_status","monthly_rent","facilities","dormitory_id"]) 
-        fileArray=[]
-        if (error != None ):
-            return make_response(jsonify(error), 400)
-        is_valid =apiHelper.check_endpoint_info(request.files, ['file[]'])
-        if(is_valid != None):
-            return make_response(jsonify(is_valid), 400)
-        for file_key in request.files.getlist('file[]'):
-            filename =apiHelper.multi_save_file(file_key)
-            if(filename == None):
-                return make_response(jsonify("Sorry, something has gone wrong"), 500)
-            fileArray.append(filename)
-        fileString=json.dumps(fileArray)
-        results = dbhelper.run_procedure('CAll  insret_new_room(?,?,?,?,?,?,?,?,?)',[request.form.get('room_number'),request.form.get('floor_name'),request.form.get('room_type'),request.form.get('capacity'),request.form.get('avilablity_status'),request.form.get('monthly_rent'),request.form.get('facilities'),fileString,request.form.get('dormitory_id')])
-        if(type(results)==list):
-                return make_response(jsonify(results), 200)
-        else:
-            return make_response(jsonify(results), 500) 
+    error=apiHelper.check_endpoint_info(request.form,["room_number","floor_name","room_type","capacity","avilablity_status","monthly_rent","facilities","dormitory_id"]) 
+    fileArray=[]
+    if (error != None ):
+        return make_response(jsonify(error), 400)
+    is_valid =apiHelper.check_endpoint_info(request.files, ['file[]'])
+    if(is_valid != None):
+        return make_response(jsonify(is_valid), 400)
+    for file_key in request.files.getlist('file[]'):
+        filename =apiHelper.multi_save_file(file_key)
+        if(filename == None):
+            return make_response(jsonify("Sorry, something has gone wrong"), 500)
+        fileArray.append(filename)
+    fileString=json.dumps(fileArray)
+    results = dbhelper.run_procedure('CAll  insret_new_room(?,?,?,?,?,?,?,?,?)',[request.form.get('room_number'),request.form.get('floor_name'),request.form.get('room_type'),request.form.get('capacity'),request.form.get('avilablity_status'),request.form.get('monthly_rent'),request.form.get('facilities'),fileString,request.form.get('dormitory_id')])
+    if(type(results)==list):
+            return make_response(jsonify(results), 200)
+    else:
+        return make_response(jsonify(results), 500) 
+        
+# API Endpoint for updating room information
+@app.patch('/api/update-room')
+def update_room():
+     # Endpoint for updating dormitory information.
+    # Requires dormitory ID and various parameters to update.
+        # error=apiHelper.check_endpoint_info(request.form,["id","room_number","floor_name","room_type","capacity","avilablity_status","monthly_rent","facilities","image_id"]) 
+    error=apiHelper.check_endpoint_info(request.form,["id"]) 
+    if (error != None ):
+      print(request.form)
+      return make_response(jsonify(error), 400)
+    is_valid =apiHelper.check_endpoint_info(request.files, ['file'])
+    if(is_valid != None):
+        return make_response(jsonify(is_valid), 400)
+        # Save the image using the helper found in apihelpers
+    filename =apiHelper.save_file(request.files['file'])
+        # If the filename is None something has gone wrong
+    if(filename == None):
+        return make_response(jsonify("Sorry, something has gone wrong"), 500)
+      #name=request.form.get("name") #empty is None
+    facilities = request.form.get("facilities")
+    results = dbhelper.run_procedure('CAll  update_rooms(?,?,?,?,?,?,?,?,?,?)',[request.form.get("id"),request.form.get('room_number'),request.form.get('floor_name'),request.form.get('room_type'),request.form.get('capacity'),request.form.get('avilablity_status'),request.form.get('monthly_rent'),request.form.get('facilities'), request.form.get('image_id'),filename,])
+    if(type(results)==list):
+        return make_response(jsonify(results), 200)
+    else:
+      return make_response(jsonify(results), 500)
         
 # API Endpoint to get dorm room images
 @app.get('/api/room-image')
