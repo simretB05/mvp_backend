@@ -170,13 +170,21 @@ def add_dormitory():
 def update_dormitory():
      # Endpoint for updating dormitory information.
     # Requires dormitory ID and various parameters to update.
-    error=apiHelper.check_endpoint_info(request.form,["id"]) 
+    error=apiHelper.check_endpoint_info(request.form,["id","name","address","city","state","zip","country","facilities","image_id"]) 
     errorHeader=apiHelper.check_endpoint_info(request.headers,["token"]) 
     if (error != None and errorHeader !=None):
       return make_response(jsonify(error), 400)
+    is_valid =apiHelper.check_endpoint_info(request.files, ['file'])
+    if(is_valid != None):
+        return make_response(jsonify(is_valid), 400)
+        # Save the image using the helper found in apihelpers
+    filename =apiHelper.save_file(request.files['file'])
+        # If the filename is None something has gone wrong
+    if(filename == None):
+        return make_response(jsonify("Sorry, something has gone wrong"), 500)
       #name=request.form.get("name") #empty is None
     facilities = request.form.get("facilities")
-    results = dbhelper.run_procedure('CAll  update_dormitory(?,?,?,?,?,?,?,?,?)',[request.form.get("id"),request.form.get("name"),request.form.get("address"),request.form.get("city"),request.form.get("state"),request.form.get("zip"),request.form.get("country"),facilities,request.headers.get("token")])
+    results = dbhelper.run_procedure('CAll  update_dormitory(?,?,?,?,?,?,?,?,?,?,?)',[request.form.get("id"),request.form.get("name"),request.form.get("address"),request.form.get("city"),request.form.get("state"),request.form.get("zip"),request.form.get("country"),facilities,request.form.get("image_id"),filename, request.headers.get("token")])
     if(type(results)==list):
         return make_response(jsonify(results), 200)
     else:
