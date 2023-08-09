@@ -17,8 +17,8 @@ app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024
 
 
 ########(University API)######
-@app.get('/api/get-all-university')
-def post_all_university():
+@app.get('/api/all-university')
+def get_all_university():
 # Endpoint to get all  university.
         results = dbhelper.run_procedure('CAll get_all_university()',[])
         if(type(results)==list):
