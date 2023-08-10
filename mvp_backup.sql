@@ -47,7 +47,7 @@ CREATE TABLE `dorm_room` (
 
 LOCK TABLES `dorm_room` WRITE;
 /*!40000 ALTER TABLE `dorm_room` DISABLE KEYS */;
-INSERT INTO `dorm_room` VALUES (182,'Aty6','A','studio unfurnished',1,'[\"bed\",\"kitchen\",\"laundry\",\"gym\"]',0,1234,233),(184,'gaouw','A','studio unfurnished',1,'[\"bed\",\"kitchen\",\"laundry\",\"gym\"]',1,1234,233),(185,'s49s','sim','studio unfurnished',1,'[\"bed\",\"kitchen\",\"gym\",\"laundry\"]',1,123,238),(186,'wesgt','sim','studio unfurnished',1,'[\"bed\",\"kitchen\",\"gym\",\"laundry\"]',1,123,238),(187,'wtru89','sim','studio unfurnished',1,'[\"bed\",\"kitchen\",\"gym\",\"laundry\"]',1,123,238),(188,'qwe','A','studio unfurnished',1,'[\"bed\",\"gym\"]',1,12345,233);
+INSERT INTO `dorm_room` VALUES (182,'Aty6','A','studio unfurnished',1,'[\"bed\",\"kitchen\",\"laundry\",\"gym\"]',0,45,233),(184,'gaouw','A','studio unfurnished',1,'[\"bed\",\"kitchen\",\"laundry\",\"gym\"]',0,45,233),(185,'s49s','sim','studio unfurnished',1,'[\"bed\",\"kitchen\",\"gym\",\"laundry\"]',1,123,238),(186,'wesgt','sim','studio unfurnished',1,'[\"bed\",\"kitchen\",\"gym\",\"laundry\"]',1,123,238),(187,'wtru89','sim','studio unfurnished',1,'[\"bed\",\"kitchen\",\"gym\",\"laundry\"]',1,123,238),(188,'qwe','A','studio unfurnished',1,'[\"bed\",\"gym\"]',1,12345,233);
 /*!40000 ALTER TABLE `dorm_room` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -250,7 +250,7 @@ CREATE TABLE `university_session` (
   UNIQUE KEY `university_session_un` (`token`),
   KEY `university_session_FK` (`university_id`),
   CONSTRAINT `university_session_FK` FOREIGN KEY (`university_id`) REFERENCES `university` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=399 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=410 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -259,7 +259,6 @@ CREATE TABLE `university_session` (
 
 LOCK TABLES `university_session` WRITE;
 /*!40000 ALTER TABLE `university_session` DISABLE KEYS */;
-INSERT INTO `university_session` VALUES (398,12,'4f65f30b-f89a-4854-bf62-03c4a6c4738f');
 /*!40000 ALTER TABLE `university_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1294,4 +1293,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-09  0:03:35
+-- Dump completed on 2023-08-10 11:33:56
