@@ -355,7 +355,7 @@ if (dbcreds.production_mode == True):
     # If running in production mode, use bjoern server to run the app.
     print("Running in Production Mode")
     import bjoern # type: ignore
-    bjoern.run(app, "0.0.0.0", 5004)
+    bjoern.run(app, "0.0.0.0", 5005)
 else: 
      # If running in testing/development mode, enable CORS and run the app using Flask built-in server.
     from flask_cors import CORS
