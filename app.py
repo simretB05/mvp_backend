@@ -1,13 +1,50 @@
-from flask import Flask, request, make_response,jsonify,send_from_directory
+from flask import Flask, request, make_response,jsonify,send_from_directory, render_template, request, redirect, url_for, session
+from flask_mail import Mail, Message
+from google.auth.transport.requests import Request
+from google_auth_oauthlib.flow import Flow
+from google.oauth2.credentials import Credentials
+from itsdangerous import URLSafeTimedSerializer
 import dbhelper
 import apiHelper
 import dbcreds
 import uuid
 import json
+import os
+# Get the path to the current directory
+current_directory = os.path.dirname(os.path.abspath(__file__))
+
+# Construct the path to credentials.json
+credentials_path = os.path.join(current_directory, 'credentials.json')
+
+# Set CLIENT_SECRETS_FILE
+
 
 from flask_cors import CORS
 
 app=Flask(__name__)
+
+
+SCOPES = ['https://www.googleapis.com/auth/gmail.send']
+CLIENT_SECRETS_FILE = credentials_path 
+API_NAME = 'gmail'
+API_VERSION = 'v1'
+REDIRECT_URI = 'https://mvp.simret.site/oauth-callback'
+AUTH_URI = 'https://accounts.google.com/o/oauth2/auth'
+TOKEN_URI = 'https://oauth2.googleapis.com/token'
+
+# Configure Flask app for session
+app.secret_key = str(uuid.uuid4())
+
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587  # or your mail server's port
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USERNAME'] = 'paulossimret35@gmail.com'
+app.config['MAIL_PASSWORD'] = 'gxrd laue pcny rncf'
+
+mail = Mail(app)
+
 
 CORS(app)
 
@@ -50,7 +87,6 @@ def post_new_university():
         uuid_value=uuid.uuid4()
         uuidSalt_value=uuid.uuid4()
         error=apiHelper.check_endpoint_info(request.form,[ "name","bio","address","city","website","phone_number","state","zip","country","email","password"]) 
-        
         if error is None:
             token = str(uuid_value)
             salt = str(uuidSalt_value)
@@ -85,7 +121,6 @@ def post_new_login():
         else:
             return make_response(jsonify(results), 500) 
         
-
 # API Endpoint for university logout
 @app.delete('/api/university-logout')
 # Endpoint for university logout. Expects the authentication token.
@@ -350,6 +385,36 @@ def delete_room():
              return make_response(jsonify(results), 200)
         else:
             return make_response(jsonify(results), 500) 
+
+
+# API Endpoint to send user rating information
+@app.post('/api/user_rating')
+def user_rating():
+    # Endpoint to post a user rating  providing username and email.
+        uuid_value=uuid.uuid4()
+        # Access user_email and verification_code
+        user_token = str(uuid_value)  
+        # error=apiHelper.check_endpoint_info(request.form.get('username'),request.form.get('user_email')) 
+        # if error is None:
+        verification_code = user_token
+        # elif(error != None):
+        #     return make_response(jsonify(error), 400)
+        # ( username, email)=request.form
+        results = dbhelper.run_procedure('CAll user_rating_info_pro(?,?,?)',[request.form.get('username'),request.form.get('user_email'),verification_code])
+        if(type(results)==list):
+            # Send the verification email
+            send_verification_email(request.form.get('user_email'),verification_code)
+            return make_response(jsonify(results), 200)
+        else:
+            return make_response(jsonify(results), 500) 
+        
+def send_verification_email(user_email, verification_code):
+    # Compose the verification email
+    msg = Message('Verification Code', sender='simretpersonalpaulos@gmail.com', recipients=[user_email])
+    msg.body = f'Your verification code is: {verification_code}'
+
+    # Send the email
+    mail.send(msg)
 
 if (dbcreds.production_mode == True):
     # If running in production mode, use bjoern server to run the app.
