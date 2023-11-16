@@ -1,5 +1,6 @@
 from flask import Flask, request, make_response,jsonify,send_from_directory, render_template, request, redirect, url_for, session
 from flask_mail import Mail, Message
+from dotenv import load_dotenv
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import Flow
 from google.oauth2.credentials import Credentials
@@ -17,6 +18,9 @@ current_directory = os.path.dirname(os.path.abspath(__file__))
 credentials_path = os.path.join(current_directory, 'credentials.json')
 
 # Set CLIENT_SECRETS_FILE
+
+# Load variables from .env file
+load_dotenv()
 
 
 from flask_cors import CORS
@@ -36,12 +40,13 @@ TOKEN_URI = 'https://oauth2.googleapis.com/token'
 app.secret_key = str(uuid.uuid4())
 
 
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587  # or your mail server's port
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USERNAME'] = 'paulossimret35@gmail.com'
-app.config['MAIL_PASSWORD'] = 'gxrd laue pcny rncf'
+# Access environment variables
+app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER')
+app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT'))
+app.config['MAIL_USE_TLS'] = os.getenv('MAIL_USE_TLS') == 'True'
+app.config['MAIL_USE_SSL'] = os.getenv('MAIL_USE_SSL') == 'True'
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 
 mail = Mail(app)
 
@@ -394,12 +399,11 @@ def user_rating():
         uuid_value=uuid.uuid4()
         # Access user_email and verification_code
         user_token = str(uuid_value)  
-        # error=apiHelper.check_endpoint_info(request.form.get('username'),request.form.get('user_email')) 
-        # if error is None:
-        verification_code = user_token
-        # elif(error != None):
-        #     return make_response(jsonify(error), 400)
-        # ( username, email)=request.form
+        error=apiHelper.check_endpoint_info(request.form,('username','user_email')) 
+        if error is None:
+            verification_code = user_token 
+        elif(error != None):
+            return make_response(jsonify(error), 400)
         results = dbhelper.run_procedure('CAll user_rating_info_pro(?,?,?)',[request.form.get('username'),request.form.get('user_email'),verification_code])
         if(type(results)==list):
             # Send the verification email
