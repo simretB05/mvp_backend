@@ -38,7 +38,7 @@ CREATE TABLE `dorm_room` (
   CONSTRAINT `dorm_room_FK` FOREIGN KEY (`dormitory_id`) REFERENCES `dormitory` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `dorm_room_check` CHECK (`room_type` = 'studio unfurnished' or `room_type` = 'studio furnished' or `room_type` = '1 bed unfurnished' or `room_type` = '1 bed furnished' or `room_type` = '2 bed unfurnished ' or `room_type` = '2 bed furnished' or `room_type` = '3 bed furnished' or `room_type` = '3 bed unfurnished' or `room_type` = 'family unfurnished' or `room_type` = 'family furnished'),
   CONSTRAINT `dorm_room_capacity_check` CHECK (`capacity` = 1 or `capacity` = 2 or `capacity` = 3 or `capacity` = 4 or `capacity` = 6)
-) ENGINE=InnoDB AUTO_INCREMENT=189 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=204 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,7 +47,7 @@ CREATE TABLE `dorm_room` (
 
 LOCK TABLES `dorm_room` WRITE;
 /*!40000 ALTER TABLE `dorm_room` DISABLE KEYS */;
-INSERT INTO `dorm_room` VALUES (182,'Aty6','A','studio unfurnished',1,'[\"bed\",\"kitchen\",\"laundry\",\"gym\"]',0,45,233),(184,'gaouw','A','studio unfurnished',1,'[\"bed\",\"kitchen\",\"laundry\",\"gym\"]',0,45,233),(185,'s49s','sim','studio unfurnished',1,'[\"bed\",\"kitchen\",\"gym\",\"laundry\"]',1,123,238),(186,'wesgt','sim','studio unfurnished',1,'[\"bed\",\"kitchen\",\"gym\",\"laundry\"]',1,123,238),(187,'wtru89','sim','studio unfurnished',1,'[\"bed\",\"kitchen\",\"gym\",\"laundry\"]',1,123,238),(188,'qwe','A','studio unfurnished',1,'[\"bed\",\"gym\"]',1,12345,233);
+INSERT INTO `dorm_room` VALUES (196,'12','si floor2','1 bed unfurnished',1,'[\"bed\",\"kitchen\",\"gym\",\"laundry\",\"wifi\",\"study room\",\"security\",\"parking\",\"elevator\"]',1,1234,246),(197,'13','si floor2','1 bed furnished',1,'[\"bed\",\"kitchen\",\"gym\",\"laundry\",\"wifi\",\"study room\",\"security\",\"parking\",\"elevator\"]',1,1234,246),(198,'16','si floor2','2 bed unfurnished',2,'[\"bed\",\"kitchen\",\"gym\",\"laundry\",\"wifi\",\"study room\",\"security\",\"parking\",\"elevator\"]',1,1234,246),(201,'12344 dfr','snowyy 123','studio furnished',2,'[\"bed\",\"kitchen\",\"gym\",\"laundry\",\"wifi\",\"security\",\"study room\"]',0,124,247),(202,'12344 dfrrt','snowyy 123','studio furnished',2,'[\"bed\",\"kitchen\",\"gym\",\"laundry\",\"wifi\",\"security\",\"study room\"]',0,124,247),(203,'12344 fdfrrt','snowyy 123','studio furnished',2,'[\"bed\",\"kitchen\",\"gym\",\"laundry\",\"wifi\",\"security\",\"study room\"]',1,124,247);
 /*!40000 ALTER TABLE `dorm_room` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -72,7 +72,7 @@ CREATE TABLE `dormitory` (
   UNIQUE KEY `dormitory_un` (`name`),
   KEY `dormitory_FK` (`university_id`),
   CONSTRAINT `dormitory_FK` FOREIGN KEY (`university_id`) REFERENCES `university` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=239 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=248 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -81,7 +81,7 @@ CREATE TABLE `dormitory` (
 
 LOCK TABLES `dormitory` WRITE;
 /*!40000 ALTER TABLE `dormitory` DISABLE KEYS */;
-INSERT INTO `dormitory` VALUES (233,'Simret','[\"bed\"]','1234 street 4',12,'Airdrie','AB','T0A','Canada'),(237,'chills','[\"bed\",\"kitchen\",\"gym\",\"laundry\"]','12345 ad',12,'Airdrie','AB','T0B','Canada'),(238,'chills2','[\"bed\",\"kitchen\",\"gym\",\"laundry\"]','12345 ad',12,'Airdrie','AB','T0B','Canada');
+INSERT INTO `dormitory` VALUES (242,'calsi next door','[\"bed\",\"kitchen\",\"gym\",\"laundry\",\"wifi\",\"study room\",\"security\",\"parking\"]','1908 12Ave Sw',23,'Calgary','AB','T3C','Canada'),(244,'si-calgary  dorm','[\"bed\",\"kitchen\",\"gym\",\"laundry\",\"wifi\",\"study room\",\"security\",\"parking\"]','1808 12Ave Sw',23,'Calgary','AB','T3C','Canada'),(246,'belisima calgary','[\"bed\",\"kitchen\",\"gym\",\"laundry\",\"wifi\",\"study room\",\"security\"]','1234 35street ',23,'Calgary','AB','T3B','Canada'),(247,'chovul','[\"bed\",\"kitchen\",\"gym\",\"study room\",\"wifi\",\"security\",\"air conditioning\",\"parking\",\"swimming pool\",\"heating\"]','deart 123 street 12 ave',29,'Bashaw','AB','T0A','Canada');
 /*!40000 ALTER TABLE `dormitory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -99,7 +99,7 @@ CREATE TABLE `dormitory_image` (
   PRIMARY KEY (`id`),
   KEY `dormitory_image_FK_1` (`dormitory_id`),
   CONSTRAINT `dormitory_image_FK_1` FOREIGN KEY (`dormitory_id`) REFERENCES `dormitory` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=229 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=258 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -108,7 +108,7 @@ CREATE TABLE `dormitory_image` (
 
 LOCK TABLES `dormitory_image` WRITE;
 /*!40000 ALTER TABLE `dormitory_image` DISABLE KEYS */;
-INSERT INTO `dormitory_image` VALUES (209,'e40367a4be624661a5a64478b34e2c6b.jpg',233),(210,'2cfb28d356a64295884cc265e3edff5a.jpg',233),(211,'da8b43ddcf7f4fdf8b5df85b3e23213e.jpg',233),(212,'fdf24000fa254525beda1bedd7f81d7d.jpg',233),(221,'4cb99b83313d4d11a1c15b0bb9437a55.jpg',237),(222,'4de4c774a648402cb71eadde950122f9.jpg',237),(223,'4e8553b89c6c4b51916e0fda5d5c259c.jpg',237),(224,'c17e5fe8c5694f1fac1409d17fd036b4.jpg',237),(225,'4e14b75a24614c7580ed2f57ce195fa2.jpg',238),(226,'4907ef2b79dc406588f7304225c4dd5c.jpg',238),(227,'67ea682e07d04696ba4c5ddefc231ab4.jpg',238),(228,'84e48f4698794039a445c9df44411f67.jpg',238);
+INSERT INTO `dormitory_image` VALUES (238,'c0148ac3a96c4010b75dcc7814e5d7d3.jpg',242),(239,'ec29cd6090104a57b05cf592afaa5e98.jpg',242),(240,'82d9ea017c83418aa21cb09770b9b1e0.jpg',242),(241,'bd9c73823009463fb6fbb78e0ab364a1.jpg',242),(242,'ea044de8016e46da9e189d1b470847f7.jpg',244),(243,'3666358595294b668b3957cb4cba2466.jpg',244),(244,'8bf7c1dd19b844cbb5d8759b3b4d0a73.jpg',244),(245,'7c57252428564594b9729737430ce25a.jpg',244),(250,'963a0611759a4cc6acf72e3c4c8da432.jpg',246),(251,'3a5e041681464eaabcf5afafc194dc1f.jpg',246),(252,'7ca6aa1ca96c410fab64770058860366.jpg',246),(253,'afb5c5dbeae34a4bbc738a84e7333ec6.jpg',246),(254,'663cf5d2069e4c44ae6539d202198de1.jpg',247),(255,'115cd09f181c4d958b122018110492b7.jpg',247),(256,'9f4117bda8c74930a62c603bdabcb3c5.jpg',247),(257,'da005ff3d045475c9885f046cd76cbd3.jpg',247);
 /*!40000 ALTER TABLE `dormitory_image` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -126,7 +126,7 @@ CREATE TABLE `facility` (
   PRIMARY KEY (`id`),
   KEY `facility_table_FK` (`dormitory_id`),
   CONSTRAINT `facility_table_FK` FOREIGN KEY (`dormitory_id`) REFERENCES `dormitory` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=895 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=940 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -135,7 +135,7 @@ CREATE TABLE `facility` (
 
 LOCK TABLES `facility` WRITE;
 /*!40000 ALTER TABLE `facility` DISABLE KEYS */;
-INSERT INTO `facility` VALUES (875,'bed',233),(876,'kitchen',233),(877,'gym',233),(878,'laundry',233),(887,'bed',237),(888,'kitchen',237),(889,'gym',237),(890,'laundry',237),(891,'bed',238),(892,'kitchen',238),(893,'gym',238),(894,'laundry',238);
+INSERT INTO `facility` VALUES (904,'bed',242),(905,'kitchen',242),(906,'gym',242),(907,'laundry',242),(908,'wifi',242),(909,'study room',242),(910,'security',242),(911,'parking',242),(912,'bed',244),(913,'kitchen',244),(914,'gym',244),(915,'laundry',244),(916,'wifi',244),(917,'study room',244),(918,'security',244),(919,'parking',244),(928,'bed',246),(929,'kitchen',246),(930,'gym',246),(931,'laundry',246),(932,'wifi',246),(933,'study room',246),(934,'security',246),(935,'bed',247),(936,'kitchen',247),(937,'gym',247),(938,'laundry',247),(939,'wifi',247);
 /*!40000 ALTER TABLE `facility` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -153,7 +153,7 @@ CREATE TABLE `room-facility` (
   PRIMARY KEY (`id`),
   KEY `room_facility_FK` (`room_id`),
   CONSTRAINT `room_facility_FK` FOREIGN KEY (`room_id`) REFERENCES `dorm_room` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=663 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=757 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -162,7 +162,7 @@ CREATE TABLE `room-facility` (
 
 LOCK TABLES `room-facility` WRITE;
 /*!40000 ALTER TABLE `room-facility` DISABLE KEYS */;
-INSERT INTO `room-facility` VALUES (637,'bed',182),(638,'kitchen',182),(639,'laundry',182),(640,'gym',182),(645,'bed',184),(646,'kitchen',184),(647,'laundry',184),(648,'gym',184),(649,'bed',185),(650,'kitchen',185),(651,'gym',185),(652,'laundry',185),(653,'bed',186),(654,'kitchen',186),(655,'gym',186),(656,'laundry',186),(657,'bed',187),(658,'kitchen',187),(659,'gym',187),(660,'laundry',187),(661,'bed',188),(662,'gym',188);
+INSERT INTO `room-facility` VALUES (702,'bed',196),(703,'kitchen',196),(704,'gym',196),(705,'laundry',196),(706,'wifi',196),(707,'study room',196),(708,'security',196),(709,'parking',196),(710,'elevator',196),(711,'bed',197),(712,'kitchen',197),(713,'gym',197),(714,'laundry',197),(715,'wifi',197),(716,'study room',197),(717,'security',197),(718,'parking',197),(719,'elevator',197),(720,'bed',198),(721,'kitchen',198),(722,'gym',198),(723,'laundry',198),(724,'wifi',198),(725,'study room',198),(726,'security',198),(727,'parking',198),(728,'elevator',198),(736,'bed',201),(737,'kitchen',201),(738,'gym',201),(739,'laundry',201),(740,'wifi',201),(741,'security',201),(742,'study room',201),(743,'bed',202),(744,'kitchen',202),(745,'gym',202),(746,'laundry',202),(747,'wifi',202),(748,'security',202),(749,'study room',202),(750,'bed',203),(751,'kitchen',203),(752,'gym',203),(753,'laundry',203),(754,'wifi',203),(755,'security',203),(756,'study room',203);
 /*!40000 ALTER TABLE `room-facility` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -180,7 +180,7 @@ CREATE TABLE `room_images` (
   PRIMARY KEY (`id`),
   KEY `room_images_FK` (`room_id`),
   CONSTRAINT `room_images_FK` FOREIGN KEY (`room_id`) REFERENCES `dorm_room` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=442 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=499 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -189,7 +189,7 @@ CREATE TABLE `room_images` (
 
 LOCK TABLES `room_images` WRITE;
 /*!40000 ALTER TABLE `room_images` DISABLE KEYS */;
-INSERT INTO `room_images` VALUES (416,'f908e418038c4ef69d47c0ae68a0dfe0.jpg',182),(417,'d73271e9703f49e8b11cc965a989eb94.jpg',182),(418,'6b2b3f12dba2425ea9a31eae6059eb7e.jpg',182),(419,'2d578b09c34c4aac838f46435ffbdd00.jpg',182),(424,'e09db6245ea24abf90881c243afb809c.jpg',184),(425,'b0ea4506d13f46cfa3e2777e1da53f7d.jpg',184),(426,'66b15e46f03445c6977501e5d2bae20a.jpg',184),(427,'94eb18928465446e8a74b7f843bf29c6.jpg',184),(428,'bd1e1474e99345a2a55bcf907a639b36.jpg',185),(429,'75d41b91b8114fe1ab0356f1b280ead9.jpg',185),(430,'c9d2c2a3ce4d4e6f9588453e4e22b8fd.jpg',185),(431,'90e206be94f94556b40cdb37f008a8b0.jpg',185),(432,'8e49d721186643a3a20a5be02296e164.jpg',186),(433,'23a77c7613bd4735b28eda7dbe51ffbd.jpg',186),(434,'c616d8721b3f4c8ca8a7e4ec7e003855.jpg',186),(435,'e265c59db1f34163a0af5be018119913.jpg',186),(436,'59991caefe0c45258e1449ca382f7587.jpg',187),(437,'ce5d47571a894287b696bbc3f48ace26.jpg',187),(438,'916be878080247d0be45818589a44dd9.jpg',187),(439,'3773d80aa2384d6b996487ae5036e5b8.jpg',187),(440,'9fd63c32f144469e90353b207e25bd64.jpg',188),(441,'137d717426d740a189e22a54713dc032.jpg',188);
+INSERT INTO `room_images` VALUES (467,'294a6f96d6f14a41930c83e967856ab6.jpg',196),(468,'0aa0563324d5475693fff089ff909343.jpg',196),(469,'3b92dc1b694648e4bd7eac244e28241b.jpg',196),(470,'aac5d49984944cf69dd3b94fe2b6721a.jpg',196),(471,'796f8632bc2f48f8b9b1d825838eef04.jpg',197),(472,'190263ad02bd43ea914f62fa608fd850.jpg',197),(473,'40adb60e14574169bf9e83ae8da47405.jpg',197),(474,'bad757f263ea4f5abd7e997d9f7090bb.jpg',197),(475,'1d6f0c1568104d4e890f7a28c6235a06.jpg',198),(476,'3a386d9c61d2494b95ec81f515c3ad96.jpg',198),(477,'33608449d2da4d4ab6ad9aa04ac2c229.jpg',198),(478,'879e022cd98f4b58bf59f207de4186d2.jpg',198),(484,'4e6348da81ce41b295ebd826c142c3e1.jpg',201),(485,'d70d77357a144872abf43166921c862c.jpg',201),(486,'d9a7f963ff374349bbbdf30bd93d0317.jpg',201),(487,'929ab60592024671a26a32a86fcea4ac.jpg',201),(488,'da75933fcd4744eb8c5c2e5afaf0ee08.jpg',201),(489,'414f2b81202d41c6a8fe152d4a05e5ca.jpg',202),(490,'45925ebceb11420ebb73b8c3cc1244b3.jpg',202),(491,'d626bf774d4b439382d151a06704e4d7.jpg',202),(492,'e489998761e341e1b62638039262704b.jpg',202),(493,'fb514eab5f5344e7aa697bc252929817.jpg',202),(494,'c337a97fb19840d0bcd8371687464be9.jpg',203),(495,'26d8a47ab0dd4b2aa190a8d790a19ac8.jpg',203),(496,'e7f67c05cb4740c0a8cdd85fbe2a5776.jpg',203),(497,'79db0b90465e454a82061b7c25cde2ad.jpg',203),(498,'89e418ad5b414281aeab4b5b2dded1c3.jpg',203);
 /*!40000 ALTER TABLE `room_images` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -222,7 +222,7 @@ CREATE TABLE `university` (
   UNIQUE KEY `university_un_name` (`name`),
   UNIQUE KEY `university_un_email` (`email`),
   CONSTRAINT `university_check_city` CHECK (`city` in ('Airdrie','Athabasca','Banff','Barrhead','Bashaw','Beaumont','Beaverlodge','Bentley','Black Diamond','Blackfalds','Blairmore','Bon Accord','Bonnyville','Bow Island','Bowden','Boyle','Bragg Creek','Brooks','Calgary','Calmar','Camrose','Canmore','Cardston','Carstairs','Chestermere','Clairmont','Claresholm','Cochrane','Cold Lake','Coronation','Crossfield','Devon','Didsbury','Drayton Valley','Drumheller','Edmonton','Edson','Elk Point','Fairview','Falher','Fort Assiniboine','Fort Macleod','Fort McMurray','Fort Saskatchewan','Fox Creek','Gibbons','Grande Cache','Grande Prairie','Grimshaw','Hanna','High Level','High Prairie','High River','Hinton','Innisfail','Irricana','Jasper','Killam','La Crete','Lacombe','Lamont','Leduc','Legal','Lethbridge','Lloydminster','Manning','Mayerthorpe','Medicine Hat','Millet','Morinville','Nanton','Okotoks','Olds','Onoway','Oyen','Peace River','Penhold','Picture Butte','Pincher Creek','Ponoka','Provost','Raymond','Red Deer','Redcliff','Rimbey','Rocky Mountain House','Saint Paul','Sexsmith','Sherwood Park','Slave Lake','Smoky Lake','Spirit River','Spruce Grove','St. Albert','Stettler','Stony Plain','Strathmore','Sundre','Swan Hills','Sylvan Lake','Taber','Thorsby','Three Hills','Tofield','Trochu','Turner Valley','Two Hills','Valleyview','Vauxhall','Vegreville','Vermilion','Viking','Vulcan','Wainwright','Warburg','Wembley','Westlock','Wetaskiwin','Whitecourt','Zama City'))
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -231,7 +231,7 @@ CREATE TABLE `university` (
 
 LOCK TABLES `university` WRITE;
 /*!40000 ALTER TABLE `university` DISABLE KEYS */;
-INSERT INTO `university` VALUES (12,'gp','this is bio','7c0a963cc97d463dafed9a74aa78d98a.png','10405 120street 104Av','Grande Prairie','gpuniversity.ca','2043337744','contact@gp.ca','*41BA6B145E7A366D9769989E778CF81A19BF8549','4f65f30b-f89a-4854-bf62-03c4a6c4738f','2023-07-16','19c30656-c551-4a3b-90f2-800ccb70b6d6','AB','T8V','Canada'),(13,'Lake Top University','this is a nice university','24740103d9874586b9c1eaf052ef4930.jpg','10405 120street 104Av','Grande Prairie','laketopUniversy.ca','2043337766','contact@lakeTop.ca','*588A85438CDCE8BC54FBEFED0A8864ACF5D090D2','8b9e392b-073d-42db-adc6-ae0ea3a22cf7','2023-07-21','598ba088-bd14-4b49-8471-73ae1fee1993','AB','T8V','Canada'),(14,'university of lake side','this is the university','e57125eb1c2c4662a5deda614a3c5e05.jpg','10406 102street','Grande Prairie','lakesideuniversity.ca','2043337755','contact@lakeside.ca','*146B05B892FC023E2929FD0B321BEE08CEDF8F26','93fbfe4b-bae8-441c-b258-6d90f18c4fa3','2023-07-21','108261e3-5895-47bb-a8cf-1dbdc51039bf','AB','T8V','Canada'),(15,'university Of Inno Tech','this is the uni of innotech','79d04561b16447429d1fcd9444461fdf.jpg','10405 102 street 106Av','Grande Prairie','innotechuniv.ca','2043337754','contact@innotech.com','*5CFEA954A32E4E525621C4203131EEA796BADC66','0e3b2364-fdd7-4b55-97f5-b5be3767f8cb','2023-07-22','8f985974-433f-40c8-b9b5-f1e7c1a0c3e2','AB','T8V','Canada'),(16,'Addis ababa','this is bio','1dd20d304d84454e821b89a7445dc6ab.jpg','10405 120 street 104 Av','Grande Prairie','gpuni.ca','2043337744','contact.gp.ca','*0A623260004D22014FF0E049889BD347622ADAEB','2fb5f1e3-312e-41e1-8f8c-6866e221490e','2023-07-27','8d085a82-d6a1-4ba2-867a-07ffbb379178','AB','T8v 2W5','canada'),(18,'gopi ','gvfjgh','22db60532a944dcba344c3d930c9b176.jpg','12345ggjjj','Airdrie','universityiopoifr.ca','2043337755','yui@con.ca','*0D70C19A10A0412971148AC9028A81AB1FDB3C7E','6b7eac03-c5ad-4b20-a08c-9feed6f6801b','2023-07-29','51b0352f-ad0d-45e6-baee-ac212e938d7e','AB','T0A','Canada'),(19,'this new','ghjfjg','037fa1c250db49ff9c92af769830b18a.jpg','rdtrytfyfy','Barrhead','thisihghf.ca','2043337744','ghftgftdfg@tess.com','*FF764F09B2B3F95315920A7E41E38187A02A6E5E','aff03ff3-b066-4e6c-848a-9540607a7f06','2023-07-29','c0efb890-b8a9-42f5-a789-069c9fe430a8','AB','T0E','Canada'),(21,'newofU','this is bio','6cb84417f0604498ba3895cee7af7297.jpg','1234566 2 street','Airdrie','uofu@uuty.ca','2043337744','nuofe@tesr.com','*278B380675F88761662DFA6F1EB09850A41C2C56','77491543-a852-44c3-ba27-dacdd75a51b7','2023-07-29','07a31bff-e684-4c92-9137-83793e589e01','AB','T0A','Canada'),(22,'newofUtr','this is bio','6cb84417f0604498ba3895cee7af7297.jpg','1234566 2 street','Airdrie','uofuoiu@uuty.ca','2043337744','nuofjute@tesr.com','*278B380675F88761662DFA6F1EB09850A41C2C56','77491543-a852-44c3-ba27-dbcdv75a51b7','2023-07-29','07a31bff-e684-4c92-9137-83793c589e01','AB','T0A','Canada');
+INSERT INTO `university` VALUES (23,'calgary University','this is calgary University','f9b2137107e14a0a8fc7c429ba505e69.jpg','1234 5th street  12 Ave','Calgary','calgaryuniv.ca','4306789085','contactcalgary.ca','*662B1C9B203BE6008E0A8DCDF9F9EB6EF4548032','0b15cfeb-a76e-4827-9b0a-f1d9dbf1f31f','2023-09-26','7b7d92fe-d7d4-4321-a4ae-a35272e85839','AB','T3A','Canada'),(24,'banff university','this is banff university','a79283abdc7e418eb81261d205965cdd.jpg','123 2street 16 Ave ','Banff','banffuniversity.ca','5678769087','banffcontact.ca','*C971B99BD6A5CD8A99D51D1F4B8B2386A5831234','a2d5137c-85c4-4214-b939-bf825e59e4dd','2023-09-26','27e89ba7-c2e9-4fb3-bbe3-39963d5d69e3','AB','T0G','Canada'),(25,'Athabasca','this is Athabasca','5b77e35a9d424d07bfd7df7d7217111c.jpg','1234 4street 5 Ave','Athabasca','Athabasca.ca','2076789545','Athabascacontact.ca','*9751E0F04C216754F4251885D8EB87DB3FC50546','9e244808-d7f6-4efb-bff6-819da85fa44c','2023-09-26','f78cedaa-cc0a-44b9-8d18-8118ad7e0658','AB','T0G','Canada'),(26,'Beaumont','this is Beaumont','c04f62705251422e80ae8f547a435592.jpg','4536 3street 2Ave','Beaumont','Beaumont.ca','2064567980','Beaumontcontact.ca','*7117B03748634F03F914CDA64F71076772505758','3371c79e-7d81-49a6-99c1-07c45bd2edfd','2023-09-26','2d7b459d-e48b-442d-95bd-858ab2ede617','AB','T0B','Canada'),(27,'Bentley university','Bentley university','e6dc01ec7527456db5cec15352a25a2d.jpg','1234 4street 12Ave','Bentley','Bentley.ca','3456789876','Bentleycontact.ca','*6E7531437374AB22487FC800464F94D2C980A822','4d852c3f-3325-4a52-9665-b32da2430877','2023-09-26','65bfa52c-c140-4e88-8984-cb53c8b02847','AB','T0A','Canada'),(28,'wills','this is the amazing uni','5b184b11c77d46b181b1062ee9f21e6e.jpg','12345 12 street 14 AVE','Bashaw','www.willis.ca','2876087653','imfowill@will.ca','*DA73F71C202A24AE4F8CC5B3ECBE76D01E09FD21','9395701a-132c-40f0-a992-7d8412abcf80','2023-11-02','0d5f1037-3a8d-4e3e-bbd9-4bb6abebffd8','AB','T0E','Canada'),(29,'University  of Chovilia','this is the University of Choviliha','a01c529e157c40a29e2208a2a34015c1.jpg','12435 12 street 12 Ave','Banff','www.chovilama.ca ','2045638792','contact.chovila.ca','*439C7DE472109892F63C3A2BAE42DAEEAD62CEC1','2696d9d5-c533-4b73-819a-5af8f10762f1','2023-11-03','b5ade35a-1716-4088-b7dc-b449e925e745','AB','T0G','Canada');
 /*!40000 ALTER TABLE `university` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -250,7 +250,7 @@ CREATE TABLE `university_session` (
   UNIQUE KEY `university_session_un` (`token`),
   KEY `university_session_FK` (`university_id`),
   CONSTRAINT `university_session_FK` FOREIGN KEY (`university_id`) REFERENCES `university` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=410 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=463 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -259,6 +259,7 @@ CREATE TABLE `university_session` (
 
 LOCK TABLES `university_session` WRITE;
 /*!40000 ALTER TABLE `university_session` DISABLE KEYS */;
+INSERT INTO `university_session` VALUES (461,29,'2696d9d5-c533-4b73-819a-5af8f10762f1');
 /*!40000 ALTER TABLE `university_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -292,7 +293,6 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (19,'Simret','Paulos','5db5a2c1406e462e872ff90a996b18d9.jpg','81293839','julian@gmail.com','*62486C95FE0B7E9B94D71DF42C64E3B0B148E548','0eaad463-4f6d-4a2c-a058-00e8e5f2edec','Simret','2023-07-15','9a0659a9-1ca7-4f4a-9360-2141d523e40a'),(20,'danel','martin','4e94999ba10249ffaf4ad86d7de7921e.jpg','2043337744','dan@da.com','*99EE8B659198521A20CC7A1A9B62394F8153CBD2','a1bda7af-ab67-46f3-b158-0836edc2e87b','danel','2023-07-15','d53a4e0f-2960-4ce0-a9f7-d1514a6dadb5'),(23,'Micheal ','YoMixc','0f2ccd6b02464fe5bbe9456ee9c037d9.jpg','2043337744','bobs@bob.com','*7B9A472FEBF660AB40C5A5C42D64E8DA8660E1E6','460e373d-ba0b-4be0-8be6-55b2c888949c','Yo','2023-07-15','424ddfc8-9d20-4e24-8c68-b5718f57488c');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -304,18 +304,17 @@ DROP TABLE IF EXISTS `user_rating`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_rating` (
+  `rating` decimal(5,2) DEFAULT NULL,
+  `room_id` int(10) unsigned DEFAULT NULL,
+  `user_email` varchar(100) DEFAULT NULL,
+  `user_auth_code` varchar(100) DEFAULT NULL,
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `rating` int(10) unsigned DEFAULT NULL,
-  `dormitory_id` int(10) unsigned NOT NULL,
-  `student_id` int(10) unsigned DEFAULT NULL,
-  `is_booked_complete` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `rating_FK` (`dormitory_id`),
-  KEY `rating_FK_1` (`student_id`),
-  CONSTRAINT `rating_FK` FOREIGN KEY (`dormitory_id`) REFERENCES `dormitory` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `rating_FK_1` FOREIGN KEY (`student_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `rating_check` CHECK (`rating` = 5 or `rating` = 4 or `rating` = 3 or `rating` = 2 or `rating` = 1 or `rating` = 1 or `rating` = 0)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+  UNIQUE KEY `user_rating_un` (`user_email`),
+  KEY `user_rating_FK` (`room_id`),
+  CONSTRAINT `user_rating_FK` FOREIGN KEY (`room_id`) REFERENCES `dorm_room` (`id`),
+  CONSTRAINT `user_rating_check` CHECK (`rating` in (0.5,1,1.5,2,2.5,3,3.5,4,4.5,5))
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -324,7 +323,35 @@ CREATE TABLE `user_rating` (
 
 LOCK TABLES `user_rating` WRITE;
 /*!40000 ALTER TABLE `user_rating` DISABLE KEYS */;
+INSERT INTO `user_rating` VALUES (1.00,196,'testing@gmail.com','123456Ertw',1),(2.00,196,'testing3@gmail.com','123yuiio456Ertw',2),(2.00,196,'testing5@gmail.com','123yuiio456Ertw',4),(1.50,196,'testing7@gmail.com','123yuoiiio456Ertw',5),(1.50,196,'testing79@gmail.com','123yuoiiio456Ertw',6),(0.50,196,'testing709@gmail.com','123yuoiiio456Ertw',7),(0.50,196,'testing19@gmail.com','123yuoiiio456Ertw',9),(0.50,196,'testing100@gmail.com','123yuoiiio456Ertw',11),(5.00,203,'brendan_drb@gmail.com','123yuoiiio456Ertw',12);
 /*!40000 ALTER TABLE `user_rating` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_rating_info`
+--
+
+DROP TABLE IF EXISTS `user_rating_info`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_rating_info` (
+  `username` varchar(100) DEFAULT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `email` varchar(100) DEFAULT NULL,
+  `user_rating_code` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_rating_info_un` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_rating_info`
+--
+
+LOCK TABLES `user_rating_info` WRITE;
+/*!40000 ALTER TABLE `user_rating_info` DISABLE KEYS */;
+INSERT INTO `user_rating_info` VALUES ('Simret',94,'simretPaulos@gmail.com','8edcab90-5911-46ef-ba67-3190e210186a'),('simret',95,'findsimret4@gmail.com','d2f2d5f4-16db-4548-a565-695d78e105ee');
+/*!40000 ALTER TABLE `user_rating_info` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -351,7 +378,6 @@ CREATE TABLE `user_session` (
 
 LOCK TABLES `user_session` WRITE;
 /*!40000 ALTER TABLE `user_session` DISABLE KEYS */;
-INSERT INTO `user_session` VALUES (12,19,'0eaad463-4f6d-4a2c-a058-00e8e5f2edec'),(13,20,'a1bda7af-ab67-46f3-b158-0836edc2e87b'),(15,23,'460e373d-ba0b-4be0-8be6-55b2c888949c');
 /*!40000 ALTER TABLE `user_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -593,8 +619,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `get_rooms_image`()
 begin
 	 select id ,room_id  ,convert(images using 'utf8') as images 
 	 from room_images
-	 order by id  desc ;
-	
+	 order by id  desc ;    
 end ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -808,8 +833,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `logout_university`(token_input varc
     MODIFIES SQL DATA
 begin
 	delete  from university_session  where token=token_input;
-    select row_count();
-    commit;
+    select row_count(); 
+    commit;
+   
 end ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1283,6 +1309,52 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `user_rating` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `user_rating`(rating_input DECIMAL(5, 2), room_id_input int unsigned,user_email_input varchar (100),user_auth_code_input varchar(100))
+    MODIFIES SQL DATA
+begin
+	
+    insert into user_rating (rating, room_id, user_email, user_auth_code)
+    values (rating_input, room_id_input, user_email_input, user_auth_code_input); 
+
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `user_rating_info_pro` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `user_rating_info_pro`(username_input varchar(100),email_input varchar(100), user_token_input varchar(100))
+begin
+	insert into user_rating_info (username,email,user_rating_code)
+	values(username_input,email_input,user_token_input );
+	select  id,convert(username  USING 'utf8') AS username ,convert(email using 'utf8') as email ,convert(user_rating_code using 'utf8')  as user_rating_code 
+	from  user_rating_info uri   where id=last_insert_id(); 
+commit;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -1293,4 +1365,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-10 11:33:56
+-- Dump completed on 2023-11-16 13:32:20
