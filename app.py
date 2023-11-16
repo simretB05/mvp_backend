@@ -400,6 +400,8 @@ def user_rating():
         # Access user_email and verification_code
         user_token = str(uuid_value)  
         error=apiHelper.check_endpoint_info(request.form,('username','user_email')) 
+        print(request.form.get('username'))
+        print(request.form.get('user_email'))
         if error is None:
             verification_code = user_token 
         elif(error != None):
