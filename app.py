@@ -263,6 +263,7 @@ def get_all_dormitories():
             return make_response((results), 200)
         else:
             return make_response((results), 500) 
+        
 
 #API Endpoint to delete a dormitory
 @app.delete('/api/dormitory')
@@ -391,28 +392,31 @@ def delete_room():
         else:
             return make_response(jsonify(results), 500) 
 
-
+## Retting  Section ##
 # API Endpoint to send user rating information
 @app.post('/api/user_rating')
 def user_rating():
     # Endpoint to post a user rating  providing username and email.
         uuid_value=uuid.uuid4()
         # Access user_email and verification_code
+        error=apiHelper.check_endpoint_info(request.form,('room_id','username','user_email')) 
+
         user_token = str(uuid_value)  
-        error=apiHelper.check_endpoint_info(request.form,('username','user_email')) 
         print(request.form.get('username'))
         print(request.form.get('user_email'))
         if error is None:
             verification_code = user_token 
         elif(error != None):
             return make_response(jsonify(error), 400)
-        results = dbhelper.run_procedure('CAll user_rating_info_pro(?,?,?)',[request.form.get('username'),request.form.get('user_email'),verification_code])
+        results = dbhelper.run_procedure('CAll user_rating_info_pro(?,?,?,?)',[request.form.get('room_id'),request.form.get('username'),request.form.get('user_email'),verification_code])
         if(type(results)==list):
             # Send the verification email
+            print(request.form.get('username'),request.form.get('user_email'),verification_code)
             send_verification_email(request.form.get('user_email'),verification_code)
             return make_response(jsonify(results), 200)
         else:
             return make_response(jsonify(results), 500) 
+
         
 def send_verification_email(user_email, verification_code):
     # Compose the verification email
@@ -421,6 +425,33 @@ def send_verification_email(user_email, verification_code):
 
     # Send the email
     mail.send(msg)
+
+
+# API Endpoint to send user rating 
+@app.post('/api/send_rating_value')
+def send_rating():
+        error=apiHelper.check_endpoint_info(request.form,('username','user_email','rating','message')) 
+        print(request.form.get('username'))
+        print(request.form.get('user_email'))
+        if (error != None ):
+            return make_response(jsonify(error), 400)
+        results = dbhelper.run_procedure('CAll user_rating_value(?,?,?,?)',[request.form.get('rating'),request.form.get('username'),request.form.get('user_email'),request.form.get('message')])
+        if(type(results)==list):
+            return make_response(jsonify(results), 200)
+        else:
+            return make_response(jsonify(results), 500) 
+        
+# API Endpoint to get user rating 
+@app.get('/api/get_all_rating')
+def get_rating():
+       # Endpoint to get all  user raings.
+        results = dbhelper.run_procedure('CAll get_all_rating()',[])
+        if(type(results)==list):
+            return make_response(jsonify(results), 200)
+        else:
+            return make_response(jsonify(results), 500) 
+     
+        
 
 if (dbcreds.production_mode == True):
     # If running in production mode, use bjoern server to run the app.
