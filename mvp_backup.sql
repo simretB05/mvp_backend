@@ -250,7 +250,7 @@ CREATE TABLE `university_session` (
   UNIQUE KEY `university_session_un` (`token`),
   KEY `university_session_FK` (`university_id`),
   CONSTRAINT `university_session_FK` FOREIGN KEY (`university_id`) REFERENCES `university` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=463 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=468 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -307,14 +307,15 @@ CREATE TABLE `user_rating` (
   `rating` decimal(5,2) DEFAULT NULL,
   `room_id` int(10) unsigned DEFAULT NULL,
   `user_email` varchar(100) DEFAULT NULL,
-  `user_auth_code` varchar(100) DEFAULT NULL,
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(100) DEFAULT NULL,
+  `message` varchar(900) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_rating_un` (`user_email`),
   KEY `user_rating_FK` (`room_id`),
   CONSTRAINT `user_rating_FK` FOREIGN KEY (`room_id`) REFERENCES `dorm_room` (`id`),
   CONSTRAINT `user_rating_check` CHECK (`rating` in (0.5,1,1.5,2,2.5,3,3.5,4,4.5,5))
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -323,7 +324,7 @@ CREATE TABLE `user_rating` (
 
 LOCK TABLES `user_rating` WRITE;
 /*!40000 ALTER TABLE `user_rating` DISABLE KEYS */;
-INSERT INTO `user_rating` VALUES (1.00,196,'testing@gmail.com','123456Ertw',1),(2.00,196,'testing3@gmail.com','123yuiio456Ertw',2),(2.00,196,'testing5@gmail.com','123yuiio456Ertw',4),(1.50,196,'testing7@gmail.com','123yuoiiio456Ertw',5),(1.50,196,'testing79@gmail.com','123yuoiiio456Ertw',6),(0.50,196,'testing709@gmail.com','123yuoiiio456Ertw',7),(0.50,196,'testing19@gmail.com','123yuoiiio456Ertw',9),(0.50,196,'testing100@gmail.com','123yuoiiio456Ertw',11),(5.00,203,'brendan_drb@gmail.com','123yuoiiio456Ertw',12);
+INSERT INTO `user_rating` VALUES (1.00,202,'happysimret@gmail.com',47,'simret','The university dormitory has been disappointing due to its cleanliness and sanitary conditions. The rooms often lack proper cleanliness, and communal spaces aren’t well-maintained. This has resulted in discomfort and health concerns among residents. Despite raising concerns, the administration\'s response to these issues has been slow, impacting our living standards negatively. Improvement in hygiene standards is crucial for residents\' well-being.'),(3.50,202,'bobio@example.com',48,'Bob Johnson','My stay at the university dormitory has been alright. The rooms and facilities are functional but could use some improvements in terms of maintenance. While the amenities provided meet basic needs, there are occasional issues that take time to be addressed. It\'s an average living space, suitable for those seeking a standard accommodation option during their university years.'),(2.50,202,'daniel@example.com',49,'Daniel XI','Residing in the university dormitory has been concerning, primarily due to the inadequate security measures in place. The safety of residents seems compromised as there have been instances of unauthorized access to the premises.'),(4.50,202,'marry@example.com',50,'Marry Row Johnson','Living in the university dormitory has been an absolute delight! The rooms are modern, spacious, and well-maintained. The amenities provided are top-notch, and the dormitory staff is friendly and helpful. The community atmosphere fosters great friendships, and the location is convenient for accessing campus resources. I highly recommend it!');
 /*!40000 ALTER TABLE `user_rating` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -339,9 +340,10 @@ CREATE TABLE `user_rating_info` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(100) DEFAULT NULL,
   `user_rating_code` varchar(100) DEFAULT NULL,
+  `room_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_rating_info_un` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=305 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -350,7 +352,7 @@ CREATE TABLE `user_rating_info` (
 
 LOCK TABLES `user_rating_info` WRITE;
 /*!40000 ALTER TABLE `user_rating_info` DISABLE KEYS */;
-INSERT INTO `user_rating_info` VALUES ('Simret',94,'simretPaulos@gmail.com','8edcab90-5911-46ef-ba67-3190e210186a'),('simret',95,'findsimret4@gmail.com','d2f2d5f4-16db-4548-a565-695d78e105ee');
+INSERT INTO `user_rating_info` VALUES ('simret',300,'simretpaulos@gmail.com','d6ac8e3c-f8f8-40c0-aaf1-e32b6bab91da',202),('simret',301,'happysimret@gmail.com','a423d70e-2f48-412f-bee8-73568199f9e9',202);
 /*!40000 ALTER TABLE `user_rating_info` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -493,6 +495,29 @@ begin
 	 from dormitory where dormitory.university_id =university_id_input 
 	 order by id desc ;
 end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_all_rating` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_rating`()
+begin
+	
+   select  id, room_id, rating, convert(username  USING 'utf8') AS username ,convert(user_email using 'utf8') as user_email,convert(message using 'utf8') as message 
+    from user_rating ur order by id desc;   
+   
+   
+END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -767,7 +792,7 @@ begin
     declare roomId int unsigned;
     declare dormitoryId int unsigned; 
     
-    select id into dormitoryId  from dormitory  where dormitory.id=dormitory_id_input;
+    select id into dormitoryId  from dormitory  where dormitory.id=dormitory_id_input; 
  
    
     insert into `dorm_room`(room_number,floor_name,room_type,capacity,avilablity_status,monthly_rent,facilities,dormitory_id) 
@@ -858,6 +883,32 @@ begin
 	delete  from  user_session  where token=token_input;
     select row_count();
     commit;
+end ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `send_rating_value` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `send_rating_value`(rating_input DECIMAL(5, 2), room_id_input int unsigned, username_input varchar(100),user_email_input varchar (100),message_input varchar(900))
+    MODIFIES SQL DATA
+begin
+	
+    insert into user_rating (rating, room_id, username, user_email,message)
+    values (rating_input, room_id_input,username_input, user_email_input,message_input);
+   
+    select  id, room_id, rating, convert(username  USING 'utf8') AS username ,convert(user_email using 'utf8') as user_email ,convert(message using 'utf8') as message 
+    from  user_rating ur   where id=last_insert_id(); 
+
 end ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1309,29 +1360,6 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `user_rating` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `user_rating`(rating_input DECIMAL(5, 2), room_id_input int unsigned,user_email_input varchar (100),user_auth_code_input varchar(100))
-    MODIFIES SQL DATA
-begin
-	
-    insert into user_rating (rating, room_id, user_email, user_auth_code)
-    values (rating_input, room_id_input, user_email_input, user_auth_code_input); 
-
-end ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `user_rating_info_pro` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1342,14 +1370,43 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `user_rating_info_pro`(username_input varchar(100),email_input varchar(100), user_token_input varchar(100))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `user_rating_info_pro`( room_id_input int unsigned ,username_input varchar(100),email_input varchar(100), user_token_input varchar(100))
 begin
-	insert into user_rating_info (username,email,user_rating_code)
-	values(username_input,email_input,user_token_input );
-	select  id,convert(username  USING 'utf8') AS username ,convert(email using 'utf8') as email ,convert(user_rating_code using 'utf8')  as user_rating_code 
+	insert into user_rating_info (room_id,username,email,user_rating_code)
+	values(room_id_input,username_input,email_input,user_token_input );
+	select  id, room_id,convert(username  USING 'utf8') AS username ,convert(email using 'utf8') as email ,convert(user_rating_code using 'utf8')  as user_rating_code 
 	from  user_rating_info uri   where id=last_insert_id(); 
 commit;
 END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `user_rating_value` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `user_rating_value`(rating_input DECIMAL(5, 2), username_input varchar(100),user_email_input varchar (100),message_input varchar(900))
+    MODIFIES SQL DATA
+begin
+	declare roomId int unsigned;
+	select room_id into roomId from user_rating_info  where email=user_email_input and username=username_input;
+
+
+    insert into user_rating (rating, room_id, username, user_email,message)
+    values (rating_input, roomId,username_input, user_email_input,message_input);
+   
+    select  id, room_id, rating, convert(username  USING 'utf8') AS username ,convert(user_email using 'utf8') as user_email ,convert(message using 'utf8') as message
+    from  user_rating ur   where id=last_insert_id(); 
+COMMIT;
+end ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -1365,4 +1422,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-16 13:32:20
+-- Dump completed on 2023-11-24 19:17:44
