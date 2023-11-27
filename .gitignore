@@ -1,4 +1,5 @@
 venv/
 dbcreds.py
 __pycache__
+credentials.json
 .env
