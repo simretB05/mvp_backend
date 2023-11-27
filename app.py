@@ -313,6 +313,7 @@ def get_all_rooms_by_id():
         if (error !=None):
           return make_response(jsonify(error), 400)
         results = dbhelper.run_procedure('CAll get_all_rooms(?)',[request.args.get("dormitory_id")])
+        print(results)
         if(type(results)==list):
             return make_response((results), 200)
         else:
@@ -433,6 +434,7 @@ def send_rating():
         error=apiHelper.check_endpoint_info(request.form,('username','user_email','rating','message')) 
         print(request.form.get('username'))
         print(request.form.get('user_email'))
+        print(request.form.get('rating'))
         if (error != None ):
             return make_response(jsonify(error), 400)
         results = dbhelper.run_procedure('CAll user_rating_value(?,?,?,?)',[request.form.get('rating'),request.form.get('username'),request.form.get('user_email'),request.form.get('message')])
@@ -446,6 +448,7 @@ def send_rating():
 def get_rating():
        # Endpoint to get all  user raings.
         results = dbhelper.run_procedure('CAll get_all_rating()',[])
+        print(results)
         if(type(results)==list):
             return make_response(jsonify(results), 200)
         else:

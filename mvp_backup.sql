@@ -231,7 +231,7 @@ CREATE TABLE `university` (
 
 LOCK TABLES `university` WRITE;
 /*!40000 ALTER TABLE `university` DISABLE KEYS */;
-INSERT INTO `university` VALUES (23,'calgary University','this is calgary University','f9b2137107e14a0a8fc7c429ba505e69.jpg','1234 5th street  12 Ave','Calgary','calgaryuniv.ca','4306789085','contactcalgary.ca','*662B1C9B203BE6008E0A8DCDF9F9EB6EF4548032','0b15cfeb-a76e-4827-9b0a-f1d9dbf1f31f','2023-09-26','7b7d92fe-d7d4-4321-a4ae-a35272e85839','AB','T3A','Canada'),(24,'banff university','this is banff university','a79283abdc7e418eb81261d205965cdd.jpg','123 2street 16 Ave ','Banff','banffuniversity.ca','5678769087','banffcontact.ca','*C971B99BD6A5CD8A99D51D1F4B8B2386A5831234','a2d5137c-85c4-4214-b939-bf825e59e4dd','2023-09-26','27e89ba7-c2e9-4fb3-bbe3-39963d5d69e3','AB','T0G','Canada'),(25,'Athabasca','this is Athabasca','5b77e35a9d424d07bfd7df7d7217111c.jpg','1234 4street 5 Ave','Athabasca','Athabasca.ca','2076789545','Athabascacontact.ca','*9751E0F04C216754F4251885D8EB87DB3FC50546','9e244808-d7f6-4efb-bff6-819da85fa44c','2023-09-26','f78cedaa-cc0a-44b9-8d18-8118ad7e0658','AB','T0G','Canada'),(26,'Beaumont','this is Beaumont','c04f62705251422e80ae8f547a435592.jpg','4536 3street 2Ave','Beaumont','Beaumont.ca','2064567980','Beaumontcontact.ca','*7117B03748634F03F914CDA64F71076772505758','3371c79e-7d81-49a6-99c1-07c45bd2edfd','2023-09-26','2d7b459d-e48b-442d-95bd-858ab2ede617','AB','T0B','Canada'),(27,'Bentley university','Bentley university','e6dc01ec7527456db5cec15352a25a2d.jpg','1234 4street 12Ave','Bentley','Bentley.ca','3456789876','Bentleycontact.ca','*6E7531437374AB22487FC800464F94D2C980A822','4d852c3f-3325-4a52-9665-b32da2430877','2023-09-26','65bfa52c-c140-4e88-8984-cb53c8b02847','AB','T0A','Canada'),(28,'wills','this is the amazing uni','5b184b11c77d46b181b1062ee9f21e6e.jpg','12345 12 street 14 AVE','Bashaw','www.willis.ca','2876087653','imfowill@will.ca','*DA73F71C202A24AE4F8CC5B3ECBE76D01E09FD21','9395701a-132c-40f0-a992-7d8412abcf80','2023-11-02','0d5f1037-3a8d-4e3e-bbd9-4bb6abebffd8','AB','T0E','Canada'),(29,'University  of Chovilia','this is the University of Choviliha','a01c529e157c40a29e2208a2a34015c1.jpg','12435 12 street 12 Ave','Banff','www.chovilama.ca ','2045638792','contact.chovila.ca','*439C7DE472109892F63C3A2BAE42DAEEAD62CEC1','2696d9d5-c533-4b73-819a-5af8f10762f1','2023-11-03','b5ade35a-1716-4088-b7dc-b449e925e745','AB','T0G','Canada');
+INSERT INTO `university` VALUES (23,'calgary University','this is calgary University','f9b2137107e14a0a8fc7c429ba505e69.jpg','1234 5th street  12 Ave','Calgary','calgaryuniv.ca','4306789085','contactcalgary.ca','*662B1C9B203BE6008E0A8DCDF9F9EB6EF4548032','0b15cfeb-a76e-4827-9b0a-f1d9dbf1f31f','2023-09-26','7b7d92fe-d7d4-4321-a4ae-a35272e85839','AB','T3A','Canada'),(24,'banff university','this is banff university','a79283abdc7e418eb81261d205965cdd.jpg','123 2street 16 Ave ','Banff','banffuniversity.ca','5678769087','banffcontact.ca','*C971B99BD6A5CD8A99D51D1F4B8B2386A5831234','a2d5137c-85c4-4214-b939-bf825e59e4dd','2023-09-26','27e89ba7-c2e9-4fb3-bbe3-39963d5d69e3','AB','T0G','Canada'),(25,'Athabasca','this is Athabasca','5b77e35a9d424d07bfd7df7d7217111c.jpg','1234 4street 5 Ave','Athabasca','Athabasca.ca','2076789545','Athabascacontact.ca','*9751E0F04C216754F4251885D8EB87DB3FC50546','9e244808-d7f6-4efb-bff6-819da85fa44c','2023-09-26','f78cedaa-cc0a-44b9-8d18-8118ad7e0658','AB','T0G','Canada'),(26,'Beaumont','this is Beaumont','c04f62705251422e80ae8f547a435592.jpg','4536 3street 2Ave','Beaumont','Beaumont.ca','2064567980','Beaumontcontact.ca','*7117B03748634F03F914CDA64F71076772505758','3371c79e-7d81-49a6-99c1-07c45bd2edfd','2023-09-26','2d7b459d-e48b-442d-95bd-858ab2ede617','AB','T0B','Canada'),(27,'Bentley university','Bentley university','e6dc01ec7527456db5cec15352a25a2d.jpg','1234 4street 12Ave','Bentley','Bentley.ca','3456789876','Bentleycontact.ca','*6E7531437374AB22487FC800464F94D2C980A822','4d852c3f-3325-4a52-9665-b32da2430877','2023-09-26','65bfa52c-c140-4e88-8984-cb53c8b02847','AB','T0A','Canada'),(28,'wills','this is the amazing uni','5b184b11c77d46b181b1062ee9f21e6e.jpg','12345 12 street 14 AVE','Bashaw','www.willis.ca','2876087653','imfowill@will.ca','*DA73F71C202A24AE4F8CC5B3ECBE76D01E09FD21','9395701a-132c-40f0-a992-7d8412abcf80','2023-11-02','0d5f1037-3a8d-4e3e-bbd9-4bb6abebffd8','AB','T0E','Canada'),(29,'University  of Chovilia','this is the University of Choviliha','a01c529e157c40a29e2208a2a34015c1.jpg','12435 12 street 12 Ave','Banff','www.chovilama.ca ','2045638792','contact@chovila.ca','*439C7DE472109892F63C3A2BAE42DAEEAD62CEC1','2696d9d5-c533-4b73-819a-5af8f10762f1','2023-11-03','b5ade35a-1716-4088-b7dc-b449e925e745','AB','T0G','Canada');
 /*!40000 ALTER TABLE `university` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -250,7 +250,7 @@ CREATE TABLE `university_session` (
   UNIQUE KEY `university_session_un` (`token`),
   KEY `university_session_FK` (`university_id`),
   CONSTRAINT `university_session_FK` FOREIGN KEY (`university_id`) REFERENCES `university` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=468 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=481 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -304,18 +304,17 @@ DROP TABLE IF EXISTS `user_rating`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_rating` (
-  `rating` decimal(5,2) DEFAULT NULL,
   `room_id` int(10) unsigned DEFAULT NULL,
   `user_email` varchar(100) DEFAULT NULL,
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(100) DEFAULT NULL,
   `message` varchar(900) DEFAULT NULL,
+  `rating` decimal(10,0) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_rating_un` (`user_email`),
   KEY `user_rating_FK` (`room_id`),
-  CONSTRAINT `user_rating_FK` FOREIGN KEY (`room_id`) REFERENCES `dorm_room` (`id`),
-  CONSTRAINT `user_rating_check` CHECK (`rating` in (0.5,1,1.5,2,2.5,3,3.5,4,4.5,5))
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+  CONSTRAINT `user_rating_FK` FOREIGN KEY (`room_id`) REFERENCES `dorm_room` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -324,7 +323,7 @@ CREATE TABLE `user_rating` (
 
 LOCK TABLES `user_rating` WRITE;
 /*!40000 ALTER TABLE `user_rating` DISABLE KEYS */;
-INSERT INTO `user_rating` VALUES (1.00,202,'happysimret@gmail.com',47,'simret','The university dormitory has been disappointing due to its cleanliness and sanitary conditions. The rooms often lack proper cleanliness, and communal spaces aren’t well-maintained. This has resulted in discomfort and health concerns among residents. Despite raising concerns, the administration\'s response to these issues has been slow, impacting our living standards negatively. Improvement in hygiene standards is crucial for residents\' well-being.'),(3.50,202,'bobio@example.com',48,'Bob Johnson','My stay at the university dormitory has been alright. The rooms and facilities are functional but could use some improvements in terms of maintenance. While the amenities provided meet basic needs, there are occasional issues that take time to be addressed. It\'s an average living space, suitable for those seeking a standard accommodation option during their university years.'),(2.50,202,'daniel@example.com',49,'Daniel XI','Residing in the university dormitory has been concerning, primarily due to the inadequate security measures in place. The safety of residents seems compromised as there have been instances of unauthorized access to the premises.'),(4.50,202,'marry@example.com',50,'Marry Row Johnson','Living in the university dormitory has been an absolute delight! The rooms are modern, spacious, and well-maintained. The amenities provided are top-notch, and the dormitory staff is friendly and helpful. The community atmosphere fosters great friendships, and the location is convenient for accessing campus resources. I highly recommend it!');
+INSERT INTO `user_rating` VALUES (202,'happysimret@gmail.com',47,'simret','The university dormitory has been disappointing due to its cleanliness and sanitary conditions. The rooms often lack proper cleanliness, and communal spaces aren’t well-maintained. This has resulted in discomfort and health concerns among residents. Despite raising concerns, the administration\'s response to these issues has been slow, impacting our living standards negatively. Improvement in hygiene standards is crucial for residents\' well-being.',1),(202,'bobio@example.com',48,'Bob Johnson','My stay at the university dormitory has been alright. The rooms and facilities are functional but could use some improvements in terms of maintenance. While the amenities provided meet basic needs, there are occasional issues that take time to be addressed. It\'s an average living space, suitable for those seeking a standard accommodation option during their university years.',4),(202,'daniel@example.com',49,'Daniel XI','Residing in the university dormitory has been concerning, primarily due to the inadequate security measures in place. The safety of residents seems compromised as there have been instances of unauthorized access to the premises.',4),(202,'marry@example.com',50,'Marry Row Johnson','Living in the university dormitory has been an absolute delight! The rooms are modern, spacious, and well-maintained. The amenities provided are top-notch, and the dormitory staff is friendly and helpful. The community atmosphere fosters great friendships, and the location is convenient for accessing campus resources. I highly recommend it!',5),(202,'lululaiui@example.com',59,'Lula Gezue','Living in the university dormitory has been the best experiance! ',5),(202,'Lulite@example.com',63,'Lulite Abebe','Living in the university dormitory has been the best experiance! ',5);
 /*!40000 ALTER TABLE `user_rating` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -343,7 +342,7 @@ CREATE TABLE `user_rating_info` (
   `room_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_rating_info_un` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=305 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=311 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -352,7 +351,7 @@ CREATE TABLE `user_rating_info` (
 
 LOCK TABLES `user_rating_info` WRITE;
 /*!40000 ALTER TABLE `user_rating_info` DISABLE KEYS */;
-INSERT INTO `user_rating_info` VALUES ('simret',300,'simretpaulos@gmail.com','d6ac8e3c-f8f8-40c0-aaf1-e32b6bab91da',202),('simret',301,'happysimret@gmail.com','a423d70e-2f48-412f-bee8-73568199f9e9',202);
+INSERT INTO `user_rating_info` VALUES ('simret',300,'simretpaulos@gmail.com','d6ac8e3c-f8f8-40c0-aaf1-e32b6bab91da',202),('simret',301,'happysimret@gmail.com','a423d70e-2f48-412f-bee8-73568199f9e9',202),('Rose',305,'rose@gmail.com','0c30f68b-893a-4bc3-a8b7-d8d52e14cec8',203),('Rose',308,'rospoe@gmail.com','2801e074-a215-4613-9f29-9ec60b998d95',203),('roszy',309,'roszy@gmail.com','22202373-33b7-4246-bd66-09a28fe3b5b0',202),('Simret',310,'simret4@gmail.com','f86ebc01-e13a-42bc-bc22-98c7ad2c53cb',203);
 /*!40000 ALTER TABLE `user_rating_info` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1393,7 +1392,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `user_rating_value`(rating_input DECIMAL(5, 2), username_input varchar(100),user_email_input varchar (100),message_input varchar(900))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `user_rating_value`(rating_input decimal, username_input varchar(100),user_email_input varchar (100),message_input varchar(900))
     MODIFIES SQL DATA
 begin
 	declare roomId int unsigned;
@@ -1401,7 +1400,7 @@ begin
 
 
     insert into user_rating (rating, room_id, username, user_email,message)
-    values (rating_input, roomId,username_input, user_email_input,message_input);
+    values (rating_input,roomId,username_input, user_email_input,message_input);
    
     select  id, room_id, rating, convert(username  USING 'utf8') AS username ,convert(user_email using 'utf8') as user_email ,convert(message using 'utf8') as message
     from  user_rating ur   where id=last_insert_id(); 
@@ -1422,4 +1421,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-24 19:17:44
+-- Dump completed on 2023-11-27 13:03:43
