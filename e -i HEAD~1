@@ -1,0 +1,200 @@
+[33mcommit 8a119427a23b788bd61bc4a3281a393e7a072c4d[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: simretB05 <happysimret@gmai.com>
+Date:   Thu Jun 6 15:57:52 2024 -0400
+
+    Update AWS S3 access permissions for uploading to S3 bucket
+
+[33mcommit 9a07d233d1edb22d8b5c68eae4cc8cda543826b2[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: simretB05 <happysimret@gmai.com>
+Date:   Sat Jun 1 18:33:40 2024 -0400
+
+     added images
+
+[33mcommit 9cac749a1260828dce32fc7c8eb99d9631c9e83c[m
+Author: Simret Paulos <happysimret@gmail.com>
+Date:   Tue Jan 16 21:17:33 2024 +0300
+
+     updated mvp sql  DB
+
+[33mcommit a0268464199beb42c7003a30c959f3b47ce9382d[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Mon Nov 27 17:10:32 2023 +0000
+
+    Commit changes before filter-branch
+
+[33mcommit 0d05a152285a30406f05d93012846740df271274[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Mon Nov 27 13:08:42 2023 +0000
+
+     modified mvp_backup.sql
+
+[33mcommit 09b00356d0488d873ae29070457b548235927dd5[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Fri Nov 24 19:20:14 2023 +0000
+
+    modified mvp_backup db
+
+[33mcommit 046a50d83a535609819cb1ce1b762445a973c036[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Fri Nov 24 18:07:09 2023 +0000
+
+    Added endpoints for sending user ratings and retrieving all ratings
+        - Implemented new API endpoint 'send_rating' to submit user ratings
+        - Added endpoint 'get_all_ratings' to fetch all user ratings
+
+[33mcommit ebaa132a9ca27bb33b8e571763375273b7ef1082[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Thu Nov 16 17:56:18 2023 +0000
+
+    testing user_rating
+
+[33mcommit ebe9dcb2ef5417634f318b2ea1c7a02c6e74b03d[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Thu Nov 16 14:18:01 2023 +0000
+
+     modified reuirements.txt file  by adding python-dotenv
+
+[33mcommit 9f39869b2803802432cdf9ac3acb98708a9f6f48[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Thu Nov 16 13:34:43 2023 +0000
+
+     modified  backup db sql
+
+[33mcommit 99b3ef4ebf5928e3a025281586442c764580abc9[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Thu Nov 16 13:13:07 2023 +0000
+
+    - Updated application to load email configurations from environment variables using python-dotenv
+
+[33mcommit bdbbe0349843f4768c622a2608748bd9dcc790e4[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Wed Nov 15 14:39:33 2023 +0000
+
+    Add user_rating_info_pro to /api/user_rating for authentication code email
+
+[33mcommit c94d9ae3a29f852a7e6bd36a6d3ac429494cd6e8[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Thu Aug 10 16:30:29 2023 -0600
+
+     changed port number for prodation
+
+[33mcommit 2e7410627ab1356067ba1292a21d8893d6705166[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Thu Aug 10 11:36:31 2023 -0600
+
+    modified mvp_backup sql
+
+[33mcommit 1b48def2c20205394d4a0cb018436f17cb96ba5f[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Wed Aug 9 07:48:36 2023 -0600
+
+     updated  APIendpoint name for getting all university
+
+[33mcommit b361d9d5ea2cee8e494bf3d96fec66a2f72b92e6[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Wed Aug 9 00:11:51 2023 -0600
+
+    updated mvp  sql backup
+
+[33mcommit 3ecb29e09c99e687295ee2b5fb309c82e256b3fd[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Tue Aug 8 19:29:45 2023 -0600
+
+    added API to get all the university and their profile
+     pictures
+
+[33mcommit 95210e4a563701fe9334c322116a288f65a8a69b[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Thu Aug 3 17:39:36 2023 -0600
+
+     added requirements file ,chnaged bjoern port number, and added an mvp db backup
+
+[33mcommit 9044a9afab015eb09f8d60b9057d9dece7166b4b[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Thu Aug 3 17:29:13 2023 -0600
+
+     added  API endpoint to update Rooms with Patch Request and DELETE request to logout user
+
+[33mcommit 9efd3a1dc338d27b0802504a63efbabccdb57c17[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Wed Aug 2 18:33:26 2023 -0600
+
+    modified  PATCH endpoint for dormitory to update images
+
+[33mcommit 2131be18f357173c60fd8171ee72a3eee0148d07[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Wed Aug 2 07:33:32 2023 -0600
+
+     added an endpoint to get all  university dormitory  rooms
+
+[33mcommit 26b91c2d0c6a1e30a7d1d0fb6f58df560a8a5c1f[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Mon Jul 31 15:46:41 2023 -0600
+
+     updated add_dormitory endpoint by adding images file
+
+[33mcommit 5a9f559f186f4bb7f7499f0ed41f6b28841de5a7[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Mon Jul 31 14:35:42 2023 -0600
+
+     updated comments for all endpoints
+
+[33mcommit 8d1c60c4915159a4fd2fbaf2959ed5cead407ec1[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Mon Jul 31 14:14:02 2023 -0600
+
+    added an Endpoint to GET images from DB
+
+[33mcommit 143e5e9e15f6c34d54c630c8a9113855f7bda127[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Sat Jul 29 01:30:40 2023 -0600
+
+    added API endpoint for addind rooms and rooms images
+
+[33mcommit 56cdbe3cc3bef74905a8b9121622a6370766db5c[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Thu Jul 27 18:15:33 2023 -0600
+
+     updated  endpoint for getting all rooms  with GET Method
+
+[33mcommit 4a6e49f50c67e85433e418514354131b1dfa4cd3[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Sun Jul 23 17:13:26 2023 -0600
+
+    added  delete,get, post API endponts for room and dormitory
+
+[33mcommit a23fdf28cd8a80dd3eb59d283fb538678f81c327[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Wed Jul 12 19:34:10 2023 -0600
+
+     added an a PATCH endpoint for user information update and university information upadate
+
+[33mcommit 7d094e99fb901eb949aefe28671e85276bba7cde[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Mon Jul 10 00:50:31 2023 -0600
+
+     added API end point for user logout and university logout
+
+[33mcommit 978cae333f926363f61eae0531421ca1e5af7512[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Sun Jul 9 23:37:17 2023 -0600
+
+     added API for dormitory and dorm-room endpoints
+
+[33mcommit 52a0a6726e53ba7989ebca19a708343cce2ad587[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Sun Jul 9 20:53:17 2023 -0600
+
+    added API endpoit for user signup and login
+
+[33mcommit e676a68ebc9ee841e0237e61bf2a8475d2149514[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Sun Jul 9 20:22:36 2023 -0600
+
+    added API endpoints for university signup and login
+
+[33mcommit 9bd793303d24977ef414d39f518f2696a68d9e7b[m
+Author: simretB05 <happysimret@gmail.com>
+Date:   Sat Jul 8 08:49:15 2023 -0600
+
+    Setting up project

@@ -10,14 +10,7 @@ import apiHelper
 import dbcreds
 import uuid
 import json
-import boto3
 import os
-
-# Initialize S3 client
-# pip install boto3
-
-s3 = boto3.client('s3')
-
 # Get the path to the current directory
 current_directory = os.path.dirname(os.path.abspath(__file__))
 
@@ -28,6 +21,7 @@ credentials_path = os.path.join(current_directory, 'credentials.json')
 
 # Load variables from .env file
 load_dotenv()
+
 
 from flask_cors import CORS
 
@@ -63,13 +57,6 @@ CORS(app)
 # In this example, I only allow images up to 0.5 MB 0.5 * 1000000 in size or # 2 megabytes in bytes,2 * 1024 * 1024 
 app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024
 
-# Initialize AWS S3 client with credentials from environment variables
-s3 = boto3.client(
-    's3',
-    aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
-    aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
-    region_name=os.getenv('AWS_BUCKET_REGION')
-)
 
 ########(University API)######
 @app.get('/api/all-university')
@@ -82,6 +69,7 @@ def get_all_university():
             return make_response((results), 500) 
 
 @app.get('/api/all-university-image')
+
 # Endpoint to get dorm room images.
 # # Fetches all room images from the database and returns base64-encoded images.
 def get_unis_image():
@@ -89,6 +77,7 @@ def get_unis_image():
     results = dbhelper.run_procedure('CAll get_all_uni_image()', [])
     if(type(results)==list):
         for item in results:
+                print(item)
                 image_data = apiHelper.get_base64_image(item['filename'])
                 item['filename'] = image_data
                 image_list.append(item)
@@ -97,55 +86,34 @@ def get_unis_image():
       return make_response(jsonify(results), 500)
     
 # University  POST API Registering a University/signin-up  
-
 @app.post('/api/university')
 def post_new_university():
-    # Generate UUID values for token and salt
-    uuid_value = uuid.uuid4()
-    uuid_salt_value = uuid.uuid4()
-
-    # Check if all required parameters are present in the form data
-    error = apiHelper.check_endpoint_info(request.form, ["name", "bio", "address", "city", "website", "phone_number", "state", "zip", "country", "email", "password"])
-    if error:
-        return make_response(jsonify(error), 400)
-
-    token = str(uuid_value)
-    salt = str(uuid_salt_value)
-
-    # Check if the file part is in the request and if it's a valid file
-    if 'file' not in request.files:
-        return make_response(jsonify({"error": "No file part in the request"}), 400)
-
-    uploaded_file = request.files['file']
-
-    if uploaded_file.filename == '':
-        return make_response(jsonify({"error": "No selected file"}), 400)
-
-    # Save the file and get the generated filename
-    filename = apiHelper.save_file(uploaded_file)
-    print(filename)
-    try:
-        # Upload the file to S3 using the generated filename
-        s3.upload_file(filename, 'mydormfinderbucket', filename)
-        s3_url = f"https://mydormfinderbucket.s3.amazonaws.com/{filename}"
-    except Exception as error:
-        return make_response(jsonify({'error': 'Failed to upload image to S3'}), 500)
-
-    if filename is None:
-        return make_response(jsonify("Sorry, something has gone wrong"), 500)
-
-
-
-    # Call the database procedure to register the university, passing the generated filename along with other form data
-    results = dbhelper.run_procedure('CAll university_signup(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                                     [request.form.get('name'), request.form.get('bio'), filename, request.form.get('address'), request.form.get('city'), request.form.get('website'), request.form.get('phone_number'), request.form.get('state'), request.form.get('zip'), request.form.get('country'), request.form.get('email'), request.form.get('password'), token, salt])
-
-    if isinstance(results, list):
-        return make_response(jsonify(results), 200)
-    else:
-        return make_response(jsonify(results), 500)
-
-
+    # Endpoint for registering a new university. It expects several parameters in the form data.
+    # Generates a UUID and UUID salt for token and password hashing purposes.
+    # Also allows uploading an image as a logo for the university.
+        uuid_value=uuid.uuid4()
+        uuidSalt_value=uuid.uuid4()
+        error=apiHelper.check_endpoint_info(request.form,[ "name","bio","address","city","website","phone_number","state","zip","country","email","password"]) 
+        if error is None:
+            token = str(uuid_value)
+            salt = str(uuidSalt_value)
+        elif(error != None):
+            return make_response(jsonify(error), 400)
+        
+        is_valid =apiHelper.check_endpoint_info(request.files, ['file'])
+        if(is_valid != None):
+            return make_response(jsonify(is_valid), 400)
+            # Save the image using the helper found in apihelpers
+        filename =apiHelper.save_file(request.files['file'])
+            # If the filename is None something has gone wrong
+        if(filename == None):
+            return make_response(jsonify("Sorry, something has gone wrong"), 500)
+        # ( username, first_name, last_name,description, phone_number, email, password ) = request.form
+        results = dbhelper.run_procedure('CAll university_signup(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',[request.form.get('name'),request.form.get('bio'),filename,request.form.get('address'),request.form.get('city'),request.form.get('website'),request.form.get('phone_number'),request.form.get('state'),request.form.get('zip'),request.form.get('country'),request.form.get('email'),request.form.get('password'),token,salt])
+        if(type(results)==list):
+                return make_response(jsonify(results), 200)
+        else:
+            return make_response(jsonify(results), 500) 
 
 # API Endpoint for university login
 @app.post('/api/university-login')
@@ -210,40 +178,31 @@ def edite_uni_info():
         return make_response(jsonify(results), 500)
 
 # API Endpoint to get university information
+@app.get('/api/university')
 # Endpoint to get university information by providing its ID.
-@app.get('/api/get_university_info')
-
 def get_university_info():
-    error = apiHelper.check_endpoint_info(request.args, ["university_id"]) 
-    if error:
-        return make_response(jsonify(error), 400)
-    
-    # Correct the procedure name to match the actual name in the database
-    results = dbhelper.run_procedure('CALL get_university_info(?)', [request.args.get("university_id")])
-    if isinstance(results, list):
-        return make_response(jsonify(results), 200)
-    else:
-        return make_response(jsonify(results), 500)
- 
+        error=apiHelper.check_endpoint_info(request.args,["university_id"]) 
+        if (error !=None):
+          return make_response(jsonify(error), 400)
+        results = dbhelper.run_procedure('CAll get_universty_info(?)',[request.args.get("university_id")])
+        if(type(results)==list):
+            return make_response((results), 200)
+        else:
+            return make_response((results), 500) 
         
 # API Endpoint to get university images
 @app.get('/api/university-image')
  # Endpoint to get university images by providing its ID.
 def get_university_image():
-    error = apiHelper.check_endpoint_info(request.args, ["university_id"]) 
-    if error is not None:
-        return make_response(jsonify(error), 400)
-    
-    results = dbhelper.run_procedure('CAll get_university_info(?)', [request.args.get("university_id")])
-    print("Filename:", results[0]['filename'])  # Print the filename for debugging
-    # print("this",results)
-    if type(results) == list:
-        image = send_from_directory('images', results[0]['filename'])
-        print("this",image)
-        return make_response(image, 200)
-    else:
-        return make_response("Internal Server Error", 500)
-
+        error=apiHelper.check_endpoint_info(request.args,["university_id"]) 
+        if (error !=None):
+          return make_response(jsonify(error), 400)
+        results = dbhelper.run_procedure('CAll get_universty_info(?)',[request.args.get("university_id")])
+        if(type(results)==list):
+            image=  send_from_directory('images', results[0]['filename'] )
+            return make_response((image), 200)
+        else:
+            return make_response((image), 500) 
         
 ###### University  Dormitory ########## 
 # API Endpoint for adding a new dormitory
@@ -512,6 +471,3 @@ else:
     
 # Running the Flask application in debug mode
 app.run(debug=True)  
-
-
-
